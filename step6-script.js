@@ -17,6 +17,8 @@ const canvasData = {
         keyResources: '',
         keyPartners: '',
         timeline: '',
+        uploadedFiles: [],
+        wireframeLinks: [],
         timestamp: null
     },
     step7: {}
@@ -165,11 +167,195 @@ function populateForm() {
     if (step6Data.timeline) {
         document.getElementById('timeline').value = step6Data.timeline;
     }
+    
+    // Display uploaded files and links
+    if (step6Data.uploadedFiles && step6Data.uploadedFiles.length > 0) {
+        displayUploadedFiles();
+    }
+    
+    if (step6Data.wireframeLinks && step6Data.wireframeLinks.length > 0) {
+        displayWireframeLinks();
+    }
+}
+
+// Handle wireframe file upload
+function handleWireframeUpload(input, type) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    // Check if file is an image
+    if (!file.type.startsWith('image/')) {
+        showNotification('Please select an image file.', 'error');
+        input.value = '';
+        return;
+    }
+    
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        showNotification('File size must be less than 5MB.', 'error');
+        input.value = '';
+        return;
+    }
+    
+    // Read file as data URL
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const fileData = {
+            id: Date.now(),
+            name: file.name,
+            type: type,
+            data: e.target.result,
+            timestamp: new Date().toISOString()
+        };
+        
+        if (!canvasData.step6.uploadedFiles) {
+            canvasData.step6.uploadedFiles = [];
+        }
+        
+        canvasData.step6.uploadedFiles.push(fileData);
+        displayUploadedFiles();
+        saveFormData();
+        
+        showNotification('File uploaded successfully!', 'success');
+    };
+    reader.readAsDataURL(file);
+    
+    // Clear the input
+    input.value = '';
+}
+
+// Add wireframe link
+function addWireframeLink() {
+    const linkInput = document.getElementById('wireframeLink');
+    const link = linkInput.value.trim();
+    
+    if (!link) {
+        showNotification('Please enter a valid link.', 'warning');
+        return;
+    }
+    
+    // Basic URL validation
+    try {
+        new URL(link);
+    } catch (e) {
+        showNotification('Please enter a valid URL.', 'error');
+        return;
+    }
+    
+    const linkData = {
+        id: Date.now(),
+        url: link,
+        timestamp: new Date().toISOString()
+    };
+    
+    if (!canvasData.step6.wireframeLinks) {
+        canvasData.step6.wireframeLinks = [];
+    }
+    
+    canvasData.step6.wireframeLinks.push(linkData);
+    displayWireframeLinks();
+    saveFormData();
+    
+    linkInput.value = '';
+    showNotification('Link added successfully!', 'success');
+}
+
+// Display uploaded files
+function displayUploadedFiles() {
+    const display = document.getElementById('uploadedFilesDisplay');
+    const filesList = document.getElementById('uploadedFilesList');
+    
+    if (!canvasData.step6.uploadedFiles || canvasData.step6.uploadedFiles.length === 0) {
+        display.style.display = 'none';
+        return;
+    }
+    
+    display.style.display = 'block';
+    filesList.innerHTML = '';
+    
+    canvasData.step6.uploadedFiles.forEach((file, index) => {
+        const fileCard = document.createElement('div');
+        fileCard.className = 'col-md-4 mb-2';
+        fileCard.innerHTML = `
+            <div class="card">
+                <img src="${file.data}" class="card-img-top" alt="${file.name}" style="height: 120px; object-fit: contain; background-color: #f8f9fa;">
+                <div class="card-body p-2">
+                    <h6 class="card-title small mb-1">${file.name}</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary small">${file.type}</span>
+                        <button class="btn btn-outline-danger btn-sm" onclick="removeUploadedFile(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        filesList.appendChild(fileCard);
+    });
+}
+
+// Display wireframe links
+function displayWireframeLinks() {
+    const display = document.getElementById('uploadedFilesDisplay');
+    const filesList = document.getElementById('uploadedFilesList');
+    
+    if (!canvasData.step6.wireframeLinks || canvasData.step6.wireframeLinks.length === 0) {
+        if (!canvasData.step6.uploadedFiles || canvasData.step6.uploadedFiles.length === 0) {
+            display.style.display = 'none';
+        }
+        return;
+    }
+    
+    display.style.display = 'block';
+    
+    canvasData.step6.wireframeLinks.forEach((link, index) => {
+        const linkCard = document.createElement('div');
+        linkCard.className = 'col-md-6 mb-2';
+        linkCard.innerHTML = `
+            <div class="card">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-link text-success me-2"></i>
+                        <div class="flex-grow-1">
+                            <a href="${link.url}" target="_blank" class="small text-decoration-none">
+                                ${link.url.length > 40 ? link.url.substring(0, 40) + '...' : link.url}
+                            </a>
+                        </div>
+                        <button class="btn btn-outline-danger btn-sm" onclick="removeWireframeLink(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        filesList.appendChild(linkCard);
+    });
+}
+
+// Remove uploaded file
+function removeUploadedFile(index) {
+    if (confirm('Are you sure you want to remove this file?')) {
+        canvasData.step6.uploadedFiles.splice(index, 1);
+        displayUploadedFiles();
+        saveFormData();
+        showNotification('File removed.', 'info');
+    }
+}
+
+// Remove wireframe link
+function removeWireframeLink(index) {
+    if (confirm('Are you sure you want to remove this link?')) {
+        canvasData.step6.wireframeLinks.splice(index, 1);
+        displayWireframeLinks();
+        saveFormData();
+        showNotification('Link removed.', 'info');
+    }
 }
 
 // Save form data
 function saveFormData() {
     canvasData.step6 = {
+        ...canvasData.step6,
         keyActivities: document.getElementById('keyActivities').value.trim(),
         keyResources: document.getElementById('keyResources').value.trim(),
         keyPartners: document.getElementById('keyPartners').value.trim(),

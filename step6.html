@@ -132,6 +132,49 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Wireframe Upload Section -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="fw-bold mb-3">Upload AI Generated Wireframes or Images</h6>
+                                <p class="text-muted small mb-3">Upload wireframes or diagrams generated from Step 5's AI prompts to support your implementation plan.</p>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="upload-option text-center p-3 border rounded bg-light">
+                                            <i class="fas fa-image fa-2x text-primary mb-2"></i>
+                                            <h6 class="small">Upload AI Generated Images</h6>
+                                            <p class="text-muted small mb-2">Upload images created by ChatGPT or Claude</p>
+                                            <input type="file" id="aiImageUpload" accept="image/*" style="display: none;" onchange="handleWireframeUpload(this, 'ai-image')">
+                                            <button class="btn btn-outline-primary btn-sm" onclick="document.getElementById('aiImageUpload').click()">
+                                                <i class="fas fa-upload me-1"></i>Choose File
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="upload-option text-center p-3 border rounded bg-light">
+                                            <i class="fas fa-link fa-2x text-success mb-2"></i>
+                                            <h6 class="small">Add Wireframe Link</h6>
+                                            <p class="text-muted small mb-2">Paste link to Claude Artifacts or online wireframes</p>
+                                            <input type="url" id="wireframeLink" class="form-control form-control-sm mb-2" placeholder="https://claude.ai/artifacts/...">
+                                            <button class="btn btn-outline-success btn-sm" onclick="addWireframeLink()">
+                                                <i class="fas fa-plus me-1"></i>Add Link
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Uploaded Files Display -->
+                                <div id="uploadedFilesDisplay" class="mt-3" style="display: none;">
+                                    <h6 class="small fw-bold mb-2">Uploaded Resources:</h6>
+                                    <div id="uploadedFilesList" class="row">
+                                        <!-- Uploaded files will appear here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
