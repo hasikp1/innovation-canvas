@@ -333,7 +333,29 @@ function handleFileUpload(input, type) {
     const reader = new FileReader();
     reader.onload = function(e) {
         currentFileData = e.target.result;
+        
+        // Auto-save the uploaded file
+        const prototype = {
+            id: Date.now(),
+            title: file.name.split('.')[0],
+            description: `${type} prototype`,
+            keyFeatures: '',
+            type: currentUploadType,
+            imageData: e.target.result,
+            timestamp: new Date().toISOString()
+        };
+        
+        if (!canvasData.step5.prototypes) {
+            canvasData.step5.prototypes = [];
+        }
+        
+        canvasData.step5.prototypes.push(prototype);
+        savedPrototypes.push(prototype);
+        
+        saveDataToStorage();
         showFilePreview(e.target.result, file.name);
+        
+        showNotification('Image uploaded and saved successfully!', 'success');
     };
     reader.readAsDataURL(file);
 }
@@ -475,10 +497,31 @@ function initializeFormHandlers() {
     formFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
-            field.addEventListener('blur', saveFormData);
+            field.addEventListener('blur', updateCurrentPrototype);
         }
     });
     
+}
+
+// Update current prototype with form data
+function updateCurrentPrototype() {
+    if (currentFileData && canvasData.step5.prototypes && canvasData.step5.prototypes.length > 0) {
+        // Find the most recent prototype (last uploaded)
+        const lastPrototype = canvasData.step5.prototypes[canvasData.step5.prototypes.length - 1];
+        
+        // Update with current form values
+        lastPrototype.title = document.getElementById('uploadTitle').value.trim() || lastPrototype.title;
+        lastPrototype.description = document.getElementById('uploadDescription').value.trim() || lastPrototype.description;
+        lastPrototype.keyFeatures = document.getElementById('uploadFeatures').value.trim() || '';
+        
+        // Update savedPrototypes array as well
+        const savedIndex = savedPrototypes.findIndex(p => p.id === lastPrototype.id);
+        if (savedIndex !== -1) {
+            savedPrototypes[savedIndex] = lastPrototype;
+        }
+        
+        saveDataToStorage();
+    }
 }
 
 // Populate form with saved data

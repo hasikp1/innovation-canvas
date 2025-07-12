@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Canvas - Step 7: Canvas Summary</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+        }
+        .section-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        .section-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .uploaded-image {
+            max-width: 150px;
+            max-height: 100px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .wireframe-link {
+            display: inline-block;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin: 2px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+            }
+            .card {
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+            }
+        }
+        .print-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar bg-light p-3 no-print">
+                <div class="mb-4">
+                    <h5 class="text-primary">Innovation Canvas</h5>
+                    <p class="small text-muted">A Beginner's Guide to Innovation</p>
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-outline-secondary btn-sm w-100" onclick="goToCanvasPreview()">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Canvas Preview
+                    </button>
+                </div>
+
+                <div class="canvas-overview">
+                    <h6 class="fw-bold mb-3">Canvas Overview</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">1</span>
+                            <span class="text-success">Define the Problem</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">2</span>
+                            <span class="text-success">Identify Target Users</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">3</span>
+                            <span class="text-success">Brainstorm Solutions</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">4</span>
+                            <span class="text-success">Select Best Solution</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">5</span>
+                            <span class="text-success">Design Prototype</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">6</span>
+                            <span class="text-success">Plan Implementation</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-primary me-2">7</span>
+                            <span class="fw-bold text-primary">Canvas Summary</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content p-4">
+                <!-- Completion Header -->
+                <div class="stats-card">
+                    <div class="mb-3">
+                        <i class="fas fa-trophy fa-3x mb-3" style="opacity: 0.8;"></i>
+                        <h2 class="mb-3">🎉 Congratulations!</h2>
+                        <p class="mb-4">Great job completing your innovation canvas! You've successfully structured your ideas and created a roadmap for your project.</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="stats-number" id="sectionsCompleted">7</span>
+                            <span class="stats-label">Sections Completed</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="stats-number" id="ideasGenerated">0</span>
+                            <span class="stats-label">Ideas Generated</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="stats-number" id="resourcesUploaded">0</span>
+                            <span class="stats-label">Resources Uploaded</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Summary Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+                    <div>
+                        <h2 class="text-primary mb-1">Your Innovation Canvas Summary</h2>
+                        <p class="text-muted">Complete overview of your innovation project</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary me-2" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i>Print Canvas
+                        </button>
+                        <button class="btn btn-primary" onclick="exportToPDF()">
+                            <i class="fas fa-file-pdf me-2"></i>Export to PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="d-flex justify-content-between mb-4 no-print">
+                    <button type="button" class="btn btn-outline-secondary" onclick="goToPreviousStep()">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </button>
+                    <div></div>
+                </div>
+
+                <!-- Print Header -->
+                <div class="print-only text-center mb-4">
+                    <h1>Innovation Canvas Summary</h1>
+                    <p class="text-muted">Generated on <span id="printDate"></span></p>
+                </div>
+
+                <!-- Canvas Summary Grid -->
+                <div class="canvas-grid">
+                    <!-- Problem -->
+                    <div class="summary-card">
+                        <div class="section-title text-danger">Problem</div>
+                        <div class="section-content" id="summaryProblem">
+                            <p class="text-muted">No problem statement available</p>
+                        </div>
+                    </div>
+
+                    <!-- Solution -->
+                    <div class="summary-card">
+                        <div class="section-title text-success">Solution</div>
+                        <div class="section-content" id="summarySolution">
+                            <p class="text-muted">No solution selected</p>
+                        </div>
+                    </div>
+
+                    <!-- Key Metrics -->
+                    <div class="summary-card">
+                        <div class="section-title text-info">Key Metrics</div>
+                        <div class="section-content" id="summaryMetrics">
+                            <p class="text-muted">No success metrics defined</p>
+                        </div>
+                    </div>
+
+                    <!-- Target Users -->
+                    <div class="summary-card">
+                        <div class="section-title text-warning">Target Users</div>
+                        <div class="section-content" id="summaryUsers">
+                            <p class="text-muted">No target users defined</p>
+                        </div>
+                    </div>
+
+                    <!-- Implementation -->
+                    <div class="summary-card">
+                        <div class="section-title text-primary">Implementation</div>
+                        <div class="section-content" id="summaryImplementation">
+                            <p class="text-muted">No implementation plan available</p>
+                        </div>
+                    </div>
+
+                    <!-- Resources -->
+                    <div class="summary-card">
+                        <div class="section-title text-secondary">Resources</div>
+                        <div class="section-content" id="summaryResources">
+                            <p class="text-muted">No resources identified</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Uploaded Files and Links -->
+                <div id="uploadedResourcesSection" class="mb-4" style="display: none;">
+                    <h4 class="mb-3">Uploaded Resources</h4>
+                    
+                    <!-- Prototype Images from Step 5 -->
+                    <div id="prototypeImagesSection" style="display: none;">
+                        <h6 class="text-primary mb-2">Prototype Images</h6>
+                        <div id="prototypeImagesList" class="mb-3"></div>
+                    </div>
+                    
+                    <!-- Wireframe Images from Step 6 -->
+                    <div id="wireframeImagesSection" style="display: none;">
+                        <h6 class="text-success mb-2">Wireframe Images</h6>
+                        <div id="wireframeImagesList" class="mb-3"></div>
+                    </div>
+                    
+                    <!-- Wireframe Links from Step 6 -->
+                    <div id="wireframeLinksSection" style="display: none;">
+                        <h6 class="text-info mb-2">Wireframe Links</h6>
+                        <div id="wireframeLinksList" class="mb-3"></div>
+                    </div>
+                </div>
+
+                <!-- Meta Information -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title">Canvas Details</h6>
+                                <p class="small mb-1"><strong>Created:</strong> <span id="creationDate">-</span></p>
+                                <p class="small mb-1"><strong>Last Updated:</strong> <span id="lastUpdated">-</span></p>
+                                <p class="small mb-0"><strong>Template:</strong> Innovation Canvas (Beginner)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title">Project Status</h6>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-success me-2">Complete</span>
+                                    <span class="small">All sections completed</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="text-center no-print">
+                    <h4 class="mb-3">Ready to Take Action?</h4>
+                    <p class="text-muted mb-4">Your innovation canvas is complete! You can now take your structured ideas and turn them into reality. Consider presenting to your class, discussing with mentors, or starting to build your minimum viable product.</p>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button class="btn btn-success btn-lg" onclick="completeSession()">
+                            <i class="fas fa-check me-2"></i>Complete Session
+                        </button>
+                        <button class="btn btn-outline-primary btn-lg" onclick="startNewCanvas()">
+                            <i class="fas fa-plus me-2"></i>Start New Canvas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feedback Section -->
+                <div class="row mt-5 no-print">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-star fa-2x text-warning mb-3"></i>
+                                <h5 class="card-title">Feedback & Support</h5>
+                                <p class="card-text">Rate your experience and help us improve the Innovation Canvas tool.</p>
+                                <button class="btn btn-warning mb-2" onclick="rateExperience()">
+                                    <i class="fas fa-star me-1"></i>Rate Your Experience
+                                </button>
+                                <br>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="sendFeedback()">
+                                    <i class="fas fa-comment me-1"></i>Send Feedback
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-download fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title">Export & Integration</h5>
+                                <p class="card-text">Download your canvas or integrate with learning management systems.</p>
+                                <button class="btn btn-primary mb-2" onclick="exportToPDF()">
+                                    <i class="fas fa-file-pdf me-1"></i>Export to PDF
+                                </button>
+                                <br>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="downloadAsImage()">
+                                    <i class="fas fa-image me-1"></i>Download as Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="step7-script.js"></script>
+</body>
+</html>
