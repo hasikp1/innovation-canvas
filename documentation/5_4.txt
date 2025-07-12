@@ -1,0 +1,41 @@
+I'm a student creating an innovation presentation for investors/class. I need professional, interactive wireframes for my app concept that demonstrate its commercial potential. **CONTEXT:** This is for an academic presentation to show technical feasibility and market opportunity.
+**APP OVERVIEW:**
+App Name: \[Your App Name]
+Core Problem: \[What specific pain point does this solve?]
+Target Users: \[Who exactly will use this? Demographics, behaviors, needs]
+Business Model: \[How does this make money? Subscription, ads, freemium, etc.]
+Platform: \[iOS, Android, Web, Desktop - be specific]
+
+**KEY FEATURES & USER FLOW:**
+Primary Feature: \[Main value proposition]
+Secondary Features: \[Supporting functionality]
+User Journey: \[How users discover → onboard → get value → retain]
+
+**TECHNICAL REQUIREMENTS:**
+Design Style: \[Modern, minimalist, playful, professional, etc.]
+Color Scheme: \[Primary brand colors]
+Target Device: \[Phone, tablet, desktop - specify screen sizes]
+Key Screens Needed: \[Login, dashboard, main feature, profile, etc.]
+
+**BUSINESS PRESENTATION NEEDS:**
+
+* Make it look investable and technically sound
+* Show clear user value proposition
+* Demonstrate scalability potential
+* Include metrics/data visualization areas
+
+**DELIVERABLES REQUESTED:**
+Create an interactive HTML artifact with:
+
+1. Landing/marketing page showing the value proposition
+2. Core app screens with realistic content
+3. User flow demonstration
+4. Professional styling suitable for investor presentations
+
+**COMPETITIVE ADVANTAGE:**
+\[What makes this unique vs existing solutions?]
+
+Please make it look like a real, market-ready product that could launch tomorrow.
+
+
+

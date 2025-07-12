@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Canvas - Step 5: Design Prototype</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar bg-light p-3">
+                <div class="mb-4">
+                    <h5 class="text-primary">Innovation Canvas</h5>
+                    <p class="small text-muted">A Beginner's Guide to Innovation</p>
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-outline-secondary btn-sm w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Templates
+                    </button>
+                </div>
+
+                <div class="canvas-overview">
+                    <h6 class="fw-bold mb-3">Canvas Overview</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">1</span>
+                            <span class="text-success">Define the Problem</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">2</span>
+                            <span class="text-success">Identify Target Users</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">3</span>
+                            <span class="text-success">Brainstorm Solutions</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">4</span>
+                            <span class="text-success">Select Best Solution</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-primary me-2">5</span>
+                            <span class="fw-bold text-primary">Design Prototype</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">6</span>
+                            <span class="text-muted">Plan Implementation</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">7</span>
+                            <span class="text-muted">Measure Success</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content p-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="text-primary mb-1">Step 5: Design Prototype</h2>
+                        <p class="text-muted">Create a visual representation of your solution concept</p>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted d-block">Progress: 5 of 7 steps</small>
+                        <div class="progress mt-1" style="width: 150px; height: 8px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 71.4%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Solution Summary -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-trophy me-2"></i>Your Selected Solution</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="selectedSolutionSummary">
+                            <div class="text-center py-4">
+                                <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                                <p class="text-muted">No solution selected yet. Please complete Step 4 first.</p>
+                                <button class="btn btn-outline-primary" onclick="goToPreviousStep()">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Solution Selection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Resources -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Learning Resources</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center">
+                                <div class="video-placeholder bg-purple text-white rounded d-flex align-items-center justify-content-center mb-3" style="height: 150px; background-color: #6f42c1;">
+                                    <div>
+                                        <i class="fas fa-play-circle fa-2x mb-2"></i>
+                                        <p class="mb-0">Video: Prototyping Basics</p>
+                                        <small>"From Idea to Visual Concept"</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3">Prototyping Guidelines:</h6>
+                                <ul class="small">
+                                    <li class="mb-2">Start simple - focus on core functionality</li>
+                                    <li class="mb-2">Use wireframes before detailed designs</li>
+                                    <li class="mb-2">Include user interface sketches</li>
+                                    <li class="mb-2">Show user flow and interactions</li>
+                                </ul>
+                                <div class="d-grid gap-2 d-md-flex">
+                                    <a href="https://claude.ai" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-robot me-1"></i>Ask Claude
+                                    </a>
+                                    <a href="https://chat.openai.com" target="_blank" class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-comments me-1"></i>Ask ChatGPT
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Research -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Market Research for Your Solution</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Tip:</strong> Copy the text below and paste it into ChatGPT or Claude to get detailed market research insights for your solution.
+                        </div>
+                        
+                        <div class="market-research-prompt bg-light p-3 rounded border">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">Market Research Prompt</h6>
+                                <button class="btn btn-outline-primary btn-sm" onclick="copyMarketResearchPrompt()">
+                                    <i class="fas fa-copy me-1"></i>Copy Text
+                                </button>
+                            </div>
+                            
+                            <div id="marketResearchText" class="small">
+                                <p><strong>I'm a student working on an innovation project and need to validate my idea before proceeding. Please help me research existing solutions and identify gaps in the market.</strong></p>
+                                
+                                <p><strong>MY INNOVATION IDEA:</strong></p>
+                                <p><strong>Product/App Name:</strong> <span id="solutionNameText" class="text-muted">[Solution name will be loaded]</span></p>
+                                <p><strong>Core Problem:</strong> <span id="problemText" class="text-muted">[Problem will be loaded from Step 1]</span></p>
+                                <p><strong>Target Market:</strong> <span id="targetUsersText" class="text-muted">[Target users will be loaded from Step 2]</span></p>
+                                <p><strong>Proposed Solution:</strong> <span id="solutionText" class="text-muted">[Selected solution will be loaded from Step 4]</span></p>
+                                <p><strong>Key Features:</strong> <span id="keyFeaturesText" class="text-muted">[Key features from refinement will be loaded]</span></p>
+                                
+                                <p><strong>RESEARCH REQUESTS:</strong></p>
+                                <p><strong>1. Existing Solutions Analysis:</strong> Find 5-10 similar products/apps, compare features, pricing, strengths/weaknesses</p>
+                                <p><strong>2. Market Gap Analysis:</strong> What problems do existing solutions NOT solve?</p>
+                                <p><strong>3. Innovation Opportunity:</strong> Is my idea truly unique? What would make it significantly better?</p>
+                                <p><strong>4. Competitive Positioning:</strong> How can I differentiate from existing solutions?</p>
+                                
+                                <p><strong>VALIDATION QUESTIONS:</strong></p>
+                                <ul>
+                                    <li>Does this solve a real, significant problem?</li>
+                                    <li>Is there sufficient market demand?</li>
+                                    <li>Can I realistically compete with existing solutions?</li>
+                                </ul>
+                                
+                                <p><strong>This research will help me either refine my innovation or pivot to a more viable opportunity.</strong></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <a href="https://claude.ai" target="_blank" class="btn btn-primary">
+                                        <i class="fas fa-robot me-2"></i>Open Claude AI
+                                    </a>
+                                    <p class="small text-muted mt-2">Paste the copied text in Claude for detailed market analysis</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <a href="https://chat.openai.com" target="_blank" class="btn btn-success">
+                                        <i class="fas fa-comments me-2"></i>Open ChatGPT
+                                    </a>
+                                    <p class="small text-muted mt-2">Paste the copied text in ChatGPT for market research insights</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Physical Product and Apps & Digital Tools Section -->
+                <div class="row mb-4">
+                    <!-- Physical Product Section -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0"><i class="fas fa-cube me-2"></i>Physical Products</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-3">Transform sketches into realistic product images</p>
+                                
+                                <h6 class="fw-bold mb-3">Step-by-Step Instructions</h6>
+                                
+                                <div class="instruction-steps">
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">1</div>
+                                        <div>
+                                            <p class="mb-0 small">First, complete market research above to validate your idea</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">2</div>
+                                        <div>
+                                            <p class="mb-0 small">Prepare your hand-drawn sketch or detailed description of your physical product</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">3</div>
+                                        <div>
+                                            <p class="mb-0 small">Take a clear photo of your sketch (if applicable) or write a detailed description</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">4</div>
+                                        <div>
+                                            <p class="mb-0 small">Open ChatGPT and use the enhanced prompt template below</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">5</div>
+                                        <div>
+                                            <p class="mb-0 small">Upload your sketch image or paste your description</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-3">
+                                        <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">6</div>
+                                        <div>
+                                            <p class="mb-0 small">Review and refine the generated image as needed</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card bg-light border-warning mb-3">
+                                    <div class="card-body">
+                                        <h6 class="text-warning mb-2"><i class="fas fa-star me-2"></i>Best Practices</h6>
+                                        <ul class="small mb-0">
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-warning me-1"></i> Always start with competitive research first</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-warning me-1"></i> Make your sketches clear with labeled parts</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-warning me-1"></i> Include business context (market size, revenue model)</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-warning me-1"></i> Specify target audience and use case clearly</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-warning me-1"></i> Mention colors, textures, and finishing details</li>
+                                            <li class="mb-0"><i class="fas fa-lightbulb text-warning me-1"></i> Focus on what makes your product unique</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="card bg-light border-warning">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="text-warning mb-0"><i class="fas fa-robot me-2"></i>Enhanced ChatGPT Prompt Template</h6>
+                                            <button class="btn btn-outline-warning btn-sm" onclick="copyPhysicalProductPrompt()">
+                                                <i class="fas fa-copy me-1"></i>Copy Text
+                                            </button>
+                                        </div>
+                                        
+                                        <div id="physicalProductPrompt" class="small text-dark bg-white p-2 rounded border" style="font-family: monospace; font-size: 11px;">
+I'm a student presenting an innovation project to investors and need a professional product visualization. Please generate a realistic, high-quality product image based on my innovation canvas. <strong>CONTEXT:</strong> This is for an academic presentation to demonstrate commercial viability. <strong>PRODUCT DETAILS:</strong> [Product Name] <span id="physicalProductName" class="text-muted">[Your Product Name]</span> Core Problem It Solves: <span id="physicalProblemText" class="text-muted">[What specific problem does this address?]</span> Target Market: <span id="physicalTargetText" class="text-muted">[Demographics, industry, use case]</span> Key Innovation: <span id="physicalInnovationText" class="text-muted">[What makes this unique/better than existing solutions?]</span> <strong>PHYSICAL SPECIFICATIONS:</strong> Size/Dimensions: <span id="physicalSizeText" class="text-muted">[Approximate size - handheld, desktop, industrial, etc.]</span> Materials: <span id="physicalMaterialsText" class="text-muted">[Plastic, metal, glass, eco-friendly materials, etc.]</span> Color Scheme: <span id="physicalColorText" class="text-muted">[Primary and accent colors]</span> Style/Aesthetic: <span id="physicalStyleText" class="text-muted">[Modern, minimalist, industrial, consumer-friendly, etc.]</span> <strong>FUNCTIONAL FEATURES:</strong> [Feature 1: Brief description] [Feature 2: Brief description] [Feature 3: Brief description] <strong>BUSINESS CONTEXT:</strong> Market Opportunity: <span id="physicalMarketText" class="text-muted">[Size of market/problem]</span> Revenue Model: <span id="physicalRevenueText" class="text-muted">[How will this make money?]</span> Competitive Advantage: <span id="physicalAdvantageText" class="text-muted">[Why this over alternatives?]</span> <strong>PRESENTATION REQUIREMENTS:</strong> - Create a professional product shot suitable for investor presentations - Show the product in a realistic usage context - Include subtle branding/labeling if applicable - Make it look market-ready and commercially viable <strong>REFERENCE STYLE:</strong> Think Apple product photography - clean, professional, highlighting key features. Generate the image and then provide a brief description of the key selling points I should mention when presenting this to investors.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Apps & Digital Tools Section -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>Apps & Digital Tools</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-3">Create professional wireframes and UI mockups</p>
+                                
+                                <h6 class="fw-bold mb-3">Step-by-Step Instructions</h6>
+                                
+                                <div class="instruction-steps">
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">1</div>
+                                        <div>
+                                            <p class="mb-0 small">First, complete market research above to validate your idea</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">2</div>
+                                        <div>
+                                            <p class="mb-0 small">Outline your app's main features and user flow</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">3</div>
+                                        <div>
+                                            <p class="mb-0 small">Create rough wireframes or sketches (optional)</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">4</div>
+                                        <div>
+                                            <p class="mb-0 small">Open Claude and use the enhanced prompt template below</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-2">
+                                        <div class="step-number bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">5</div>
+                                        <div>
+                                            <p class="mb-0 small">Specify your app type and target platform</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-3">
+                                        <div class="step-number bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 25px; height: 25px; font-weight: bold; font-size: 12px;">6</div>
+                                        <div>
+                                            <p class="mb-0 small">Request specific screens or the entire user journey</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card bg-light border-success mb-3">
+                                    <div class="card-body">
+                                        <h6 class="text-success mb-2"><i class="fas fa-star me-2"></i>Best Practices</h6>
+                                        <ul class="small mb-0">
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-success me-1"></i> Always start with competitive research first</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-success me-1"></i> Define your app's primary purpose clearly</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-success me-1"></i> Include business model and revenue strategy</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-success me-1"></i> List key features and user actions</li>
+                                            <li class="mb-1"><i class="fas fa-lightbulb text-success me-1"></i> Specify target device (mobile, tablet, desktop)</li>
+                                            <li class="mb-0"><i class="fas fa-lightbulb text-success me-1"></i> Focus on unique value proposition</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="card bg-light border-success">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="text-success mb-0"><i class="fas fa-robot me-2"></i>Enhanced Claude Prompt Template</h6>
+                                            <button class="btn btn-outline-success btn-sm" onclick="copyDigitalToolPrompt()">
+                                                <i class="fas fa-copy me-1"></i>Copy Text
+                                            </button>
+                                        </div>
+                                        
+                                        <div id="digitalToolPrompt" class="small text-dark bg-white p-2 rounded border" style="font-family: monospace; font-size: 11px;">
+I'm a student creating an innovation presentation for investors/class. I need professional, interactive wireframes for my app concept that demonstrate its commercial potential. <strong>CONTEXT:</strong> This is for an academic presentation to show technical feasibility and market opportunity.
+<strong>APP OVERVIEW:</strong>
+App Name: <span id="digitalAppName" class="text-muted">[Your App Name]</span>
+Core Problem: <span id="digitalProblemText" class="text-muted">[What specific pain point does this solve?]</span>
+Target Users: <span id="digitalTargetText" class="text-muted">[Who exactly will use this? Demographics, behaviors, needs]</span>
+Business Model: <span id="digitalBusinessText" class="text-muted">[How does this make money? Subscription, ads, freemium, etc.]</span>
+Platform: <span id="digitalPlatformText" class="text-muted">[iOS, Android, Web, Desktop - be specific]</span>
+
+<strong>KEY FEATURES & USER FLOW:</strong>
+Primary Feature: <span id="digitalPrimaryText" class="text-muted">[Main value proposition]</span>
+Secondary Features: <span id="digitalSecondaryText" class="text-muted">[Supporting functionality]</span>
+User Journey: <span id="digitalJourneyText" class="text-muted">[How users discover → onboard → get value → retain]</span>
+
+<strong>TECHNICAL REQUIREMENTS:</strong>
+Design Style: <span id="digitalStyleText" class="text-muted">[Modern, minimalist, playful, professional, etc.]</span>
+Color Scheme: <span id="digitalColorText" class="text-muted">[Primary brand colors]</span>
+Target Device: <span id="digitalDeviceText" class="text-muted">[Phone, tablet, desktop - specify screen sizes]</span>
+Key Screens Needed: <span id="digitalScreensText" class="text-muted">[Login, dashboard, main feature, profile, etc.]</span>
+
+<strong>BUSINESS PRESENTATION NEEDS:</strong>
+
+* Make it look investable and technically sound
+* Show clear user value proposition
+* Demonstrate scalability potential
+* Include metrics/data visualization areas
+
+<strong>DELIVERABLES REQUESTED:</strong>
+Create an interactive HTML artifact with:
+
+1. Landing/marketing page showing the value proposition
+2. Core app screens with realistic content
+3. User flow demonstration
+4. Professional styling suitable for investor presentations
+
+<strong>COMPETITIVE ADVANTAGE:</strong>
+<span id="digitalAdvantageText" class="text-muted">[What makes this unique vs existing solutions?]</span>
+
+Please make it look like a real, market-ready product that could launch tomorrow.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Prototype -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">Upload Your Prototype</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="upload-option text-center p-4 border rounded">
+                                    <i class="fas fa-pencil-alt fa-3x text-primary mb-3"></i>
+                                    <h6>Upload Pencil Sketch</h6>
+                                    <p class="text-muted small">Upload a photo of your hand-drawn sketch</p>
+                                    <input type="file" id="sketchUpload" accept="image/*" style="display: none;" onchange="handleFileUpload(this, 'sketch')">
+                                    <button class="btn btn-primary" onclick="document.getElementById('sketchUpload').click()">
+                                        <i class="fas fa-upload me-2"></i>Choose File
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="upload-option text-center p-4 border rounded">
+                                    <i class="fas fa-sitemap fa-3x text-success mb-3"></i>
+                                    <h6>Upload Wireframe Diagram</h6>
+                                    <p class="text-muted small">Upload a digital wireframe or diagram</p>
+                                    <input type="file" id="wireframeUpload" accept="image/*" style="display: none;" onchange="handleFileUpload(this, 'wireframe')">
+                                    <button class="btn btn-success" onclick="document.getElementById('wireframeUpload').click()">
+                                        <i class="fas fa-upload me-2"></i>Choose File
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- File Preview -->
+                        <div id="filePreview" style="display: none;" class="mt-4">
+                            <div class="border rounded p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Preview</h6>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="removePreview()">
+                                        <i class="fas fa-times me-1"></i>Remove
+                                    </button>
+                                </div>
+                                <div class="text-center">
+                                    <img id="previewImage" src="" alt="Preview" class="img-fluid rounded" style="max-height: 300px;">
+                                </div>
+                                <div class="mt-3">
+                                    <div class="mb-3">
+                                        <label for="uploadTitle" class="form-label fw-bold">Prototype Title</label>
+                                        <input type="text" class="form-control" id="uploadTitle" placeholder="Enter prototype name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="uploadDescription" class="form-label fw-bold">Description</label>
+                                        <textarea class="form-control" id="uploadDescription" rows="3" placeholder="Describe your prototype"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="uploadFeatures" class="form-label fw-bold">Key Features</label>
+                                        <textarea class="form-control" id="uploadFeatures" rows="4" placeholder="List the main features of your solution"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Pro Tips</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>💡 "Start with Paper"</strong>
+                                    <p class="small mb-2">Sketch on paper first, then digitize your best ideas.</p>
+                                </div>
+                                
+                                <ol class="small">
+                                    <li class="mb-2">"Focus on user needs"
+                                        <span class="text-muted">(What do users need to accomplish?)</span>
+                                    </li>
+                                    <li class="mb-2">"Keep it simple" 
+                                        <span class="text-muted">(Start with basic functionality.)</span>
+                                    </li>
+                                    <li class="mb-2">"Test early and often" 
+                                        <span class="text-muted">(Get feedback on your prototype.)</span>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-tools me-2"></i>Prototype Elements</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="element-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-primary">Layout</strong>
+                                        <span class="text-muted">Structure</span>
+                                    </div>
+                                    <small class="text-muted">How elements are arranged on screen</small>
+                                </div>
+                                
+                                <div class="element-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-success">Navigation</strong>
+                                        <span class="text-muted">Flow</span>
+                                    </div>
+                                    <small class="text-muted">How users move through your solution</small>
+                                </div>
+                                
+                                <div class="element-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-warning">Interactions</strong>
+                                        <span class="text-muted">Actions</span>
+                                    </div>
+                                    <small class="text-muted">Buttons, forms, and user inputs</small>
+                                </div>
+                                
+                                <div class="element-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-info">Content</strong>
+                                        <span class="text-muted">Information</span>
+                                    </div>
+                                    <small class="text-muted">Text, images, and data display</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" onclick="goToPreviousStep()">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveAndContinue()">
+                        Save & Continue<i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="step5-script.js"></script>
+</body>
+</html>

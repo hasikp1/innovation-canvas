@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Canvas - Step 2: Identify Target Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar bg-light p-3">
+                <div class="mb-4">
+                    <h5 class="text-primary">Innovation Canvas</h5>
+                    <p class="small text-muted">A Beginner's Guide to Innovation</p>
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-outline-secondary btn-sm w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Templates
+                    </button>
+                </div>
+
+                <div class="canvas-overview">
+                    <h6 class="fw-bold mb-3">Canvas Overview</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">1</span>
+                            <span class="text-success">Define the Problem</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-primary me-2">2</span>
+                            <span class="fw-bold text-primary">Identify Target Users</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">3</span>
+                            <span class="text-muted">Brainstorm Solutions</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">4</span>
+                            <span class="text-muted">Select Best Solution</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">5</span>
+                            <span class="text-muted">Design Prototype</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">6</span>
+                            <span class="text-muted">Plan Implementation</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">7</span>
+                            <span class="text-muted">Measure Success</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content p-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="text-primary mb-1">Step 2: Identify Target Users</h2>
+                        <p class="text-muted">Define who will benefit from your solution</p>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted d-block">Progress: 2 of 7 steps</small>
+                        <div class="progress mt-1" style="width: 150px; height: 8px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 28.6%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Groups Form -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">User Groups</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="userGroupsForm">
+                                    <div class="mb-3">
+                                        <label for="primaryUsers" class="form-label fw-bold">
+                                            Primary Users <span class="text-danger">*</span>
+                                        </label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="primaryUsers" 
+                                            placeholder="e.g., College students aged 18-25"
+                                            required>
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle text-primary me-1"></i>
+                                            Who are the main users of your solution?
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="keyNeeds" class="form-label fw-bold">
+                                            Key Needs <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="keyNeeds" 
+                                            rows="3" 
+                                            placeholder="e.g., Need affordable study materials, want quick access to information, require flexible scheduling options..."
+                                            required></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="biggestFrustration" class="form-label fw-bold">
+                                            Biggest Frustration
+                                        </label>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="biggestFrustration" 
+                                            rows="2" 
+                                            placeholder="e.g., Existing apps are too complicated, current tools are expensive, no mobile-friendly options available..."></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pro Tips -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Pro Tips</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>💡 "Who Really Cares About This Problem?"</strong>
+                                    <p class="small mb-2">(Who inherently benefits from solving this?)</p>
+                                </div>
+                                
+                                <ol class="small">
+                                    <li class="mb-2">"Be Specific - Avoid 'Everyone'"
+                                        <span class="text-muted">(The more specific, the better.)</span>
+                                    </li>
+                                    <li class="mb-2">"Think Beyond Demographics"
+                                        <span class="text-muted">(Consider behaviors, motivations.)</span>
+                                    </li>
+                                    <li class="mb-2">"Interview 3 people from your target group"
+                                        <span class="text-muted">(Real insights beats assumptions.)</span>
+                                    </li>
+                                    <li class="mb-2">"Two Relationships"
+                                        <span class="text-muted">(Direct connections.)</span>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Resources -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Learning Resources</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 text-center">
+                                        <div class="video-placeholder bg-info text-white rounded d-flex align-items-center justify-content-center mb-3" style="height: 150px;">
+                                            <div>
+                                                <i class="fas fa-play-circle fa-2x mb-2"></i>
+                                                <p class="mb-0">Video: 30-Second Video Tip</p>
+                                                <small>"How to Spot Hidden Users"</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold mb-3">Quick User Research Tips:</h6>
+                                        <ul class="small">
+                                            <li class="mb-2">Start with people you know who face this problem</li>
+                                            <li class="mb-2">Ask "What's the worst part about..." questions</li>
+                                            <li class="mb-2">Look for emotional responses, not just logical ones</li>
+                                            <li class="mb-2">Notice what they do, not just what they say</li>
+                                        </ul>
+                                        <div class="d-grid gap-2 d-md-flex">
+                                            <a href="https://claude.ai" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-robot me-1"></i>Ask Claude
+                                            </a>
+                                            <a href="https://chat.openai.com" target="_blank" class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-comments me-1"></i>Ask ChatGPT
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Persona Builder -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">Build Your User Persona</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="personaName" class="form-label fw-bold">
+                                        Give your typical user a name
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="personaName" 
+                                        placeholder="e.g., Sarah, the busy student">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="personaAge" class="form-label fw-bold">
+                                        Age Range
+                                    </label>
+                                    <select class="form-select" id="personaAge">
+                                        <option value="">Select age range</option>
+                                        <option value="Under 18">Under 18</option>
+                                        <option value="18-25">18-25</option>
+                                        <option value="26-35">26-35</option>
+                                        <option value="36-45">36-45</option>
+                                        <option value="46-55">46-55</option>
+                                        <option value="Over 55">Over 55</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="personaOccupation" class="form-label fw-bold">
+                                        Occupation/Role
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="personaOccupation" 
+                                        placeholder="e.g., College student, Working parent">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="personaGoals" class="form-label fw-bold">
+                                        Main Goals
+                                    </label>
+                                    <textarea 
+                                        class="form-control" 
+                                        id="personaGoals" 
+                                        rows="3" 
+                                        placeholder="e.g., Graduate with good grades, save money while studying, learn new skills quickly, balance work and study..."></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="personaChallenges" class="form-label fw-bold">
+                                        Current Challenges
+                                    </label>
+                                    <textarea 
+                                        class="form-control" 
+                                        id="personaChallenges" 
+                                        rows="3" 
+                                        placeholder="e.g., Limited budget for resources, difficulty managing time, lack of reliable internet, overwhelming course workload..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="persona-preview bg-light p-3 rounded mt-3" id="personaPreview" style="display: none;">
+                            <h6 class="text-primary">Your User Persona:</h6>
+                            <div id="personaDisplay"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" onclick="goToPreviousStep()">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveAndContinue()">
+                        Save & Continue<i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="step2-script.js"></script>
+</body>
+</html>

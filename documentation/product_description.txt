@@ -1,0 +1,25 @@
+My innovation – “Innovation Canvas – A Web Tool to Support Structured Student Brainstorming.” Innovation Canvas 
+is a structured digital tool designed to help students and early-stage innovators brainstorm, organize, and develop ideas using proven innovation frameworks. It acts as a scaffolding system that guides users through the creative process step-by-step, making abstract concepts more accessible and actionable.
+🔍 Key Features of Innovation Canvas:
+1.	Framework-Based Templates
+It offers multiple templates like:
+o	Lean Canvas – for business model development
+o	Beginner Canvas – simplified for first-time innovators
+2.	Guided Input
+Users are prompted to fill in each section one at a time, with:
+o	Tips and examples
+o	Embedded learning resources (e.g., videos)
+3.	Structured Brainstorming Workflow
+Includes steps like:
+o	Defining the problem
+o	Setting ground rules
+o	Silent brainstorming
+o	Grouping and prioritizing ideas
+o	Planning next steps
+4.	Visual Output
+Automatically generates a visual canvas based on user input, which can be:
+o	Presented in class
+o	Saved or shared
+o	Exported for further development
+5.	Educational Focus
+Designed for students in innovation and change modules, especially in resource-constrained settings, to support creativity, collaboration, and critical thinking.

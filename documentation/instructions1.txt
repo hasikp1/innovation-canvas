@@ -1,0 +1,22 @@
+Build My "Innovation Canvas" App Step by Step — Confirm Each Step Before Moving Forward,
+Hi Claude, I’m building a web-based educational tool called “Innovation Canvas.” You are going to act as my coding assistant. You will help me build this app using HTML and JavaScript only. Please do not use React, Vue, or any frameworks unless I ask. The code should be clean, well-commented, and editable for a beginner like me. I'm hosting it locally using WAMPP.
+
+Innovation Canvas – A Web Tool to Support Structured Student Brainstorming
+It is a digital scaffolding tool that helps students generate and develop ideas using popular innovation frameworks.
+
+Build Rules (Important)
+* You will create the app **one section at a time**
+* Before starting **each new section**, ask me:
+“Do you want to continue with the next section?”
+* I will upload **wireframe screens as needed**
+* You will generate **HTML + CSS + JS** for each section
+* Keep everything in `html`, `css`, and `js`
+
+App Flow (Total 7 Sections)
+1. **Define the Problem**
+2. **Identify Target Users**
+3. **Brainstorming**
+4. **Select Best Solution**
+5. **Prototyping (Image Generator)** ← you’ll build this next
+6. **Plan Implementation**
+7. **Measure Success**

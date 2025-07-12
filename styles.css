@@ -1,0 +1,180 @@
+/* Innovation Canvas Custom Styles */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    min-height: 100vh;
+    border-right: 1px solid #dee2e6;
+    background-color: #ffffff !important;
+}
+
+.sidebar h5 {
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 10px;
+}
+
+.canvas-overview ul li {
+    padding: 8px 0;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.canvas-overview ul li:hover {
+    background-color: #f8f9fa;
+    padding-left: 10px;
+}
+
+.canvas-overview .badge {
+    width: 25px;
+    height: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.main-content {
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+
+.video-placeholder {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.video-placeholder:hover {
+    transform: scale(1.02);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.card-header {
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: 600;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.progress {
+    border-radius: 10px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .main-content {
+        padding: 15px !important;
+    }
+    
+    .video-placeholder {
+        height: 150px !important;
+    }
+}
+
+/* Animation for form validation */
+.was-validated .form-control:invalid {
+    border-color: #dc3545;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Success states */
+.form-control.is-valid {
+    border-color: #198754;
+}
+
+.text-success {
+    color: #198754 !important;
+}
+
+/* Custom tooltip styles */
+.tooltip {
+    font-size: 0.875rem;
+}
+
+/* Loading states */
+.btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Pro tips styling */
+.card-header.bg-warning {
+    background-color: #fff3cd !important;
+    border-color: #ffeaa7;
+}
+
+/* Video placeholder styling */
+.video-placeholder i {
+    opacity: 0.8;
+}
+
+.video-placeholder:hover i {
+    opacity: 1;
+    transform: scale(1.1);
+    transition: all 0.2s;
+}
