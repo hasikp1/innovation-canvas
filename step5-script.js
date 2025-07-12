@@ -592,8 +592,7 @@ function saveAndContinue() {
         showNotification('Step 5 completed successfully! Moving to next step...', 'success');
         
         setTimeout(() => {
-            // Here you would redirect to step 6
-            console.log('Ready to move to Step 6: Plan Implementation');
+            window.location.href = 'step6.html';
         }, 1500);
     }
 }

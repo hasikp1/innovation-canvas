@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Canvas - Step 6: Plan Implementation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar bg-light p-3">
+                <div class="mb-4">
+                    <h5 class="text-primary">Innovation Canvas</h5>
+                    <p class="small text-muted">A Beginner's Guide to Innovation</p>
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-outline-secondary btn-sm w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Templates
+                    </button>
+                </div>
+
+                <div class="canvas-overview">
+                    <h6 class="fw-bold mb-3">Canvas Overview</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">1</span>
+                            <span class="text-success">Define the Problem</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">2</span>
+                            <span class="text-success">Identify Target Users</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">3</span>
+                            <span class="text-success">Brainstorm Solutions</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">4</span>
+                            <span class="text-success">Select Best Solution</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-success me-2">5</span>
+                            <span class="text-success">Design Prototype</span>
+                            <i class="fas fa-check text-success ms-2"></i>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-primary me-2">6</span>
+                            <span class="fw-bold text-primary">Plan Implementation</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-2">7</span>
+                            <span class="text-muted">Measure Success</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content p-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="text-primary mb-1">Step 6: Plan Implementation</h2>
+                        <p class="text-muted">Outline the necessary steps, resources, and partnerships to execute the idea</p>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted d-block">Progress: 6 of 7 steps</small>
+                        <div class="progress mt-1" style="width: 150px; height: 8px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 85.7%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Solution Summary -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-trophy me-2"></i>Your Selected Solution</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="selectedSolutionSummary">
+                            <div class="text-center py-4">
+                                <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                                <p class="text-muted">No solution selected yet. Please complete Step 4 first.</p>
+                                <button class="btn btn-outline-primary" onclick="goToPreviousStep()">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Solution Selection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Resources -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Learning Resources</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center">
+                                <div class="video-placeholder bg-info text-white rounded d-flex align-items-center justify-content-center mb-3" style="height: 150px;">
+                                    <div>
+                                        <i class="fas fa-play-circle fa-2x mb-2"></i>
+                                        <p class="mb-0">Video: Implementation Planning</p>
+                                        <small>"From Idea to Reality"</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3">Implementation Guidelines:</h6>
+                                <ul class="small">
+                                    <li class="mb-2">Break down your project into manageable tasks</li>
+                                    <li class="mb-2">Identify required resources and skills</li>
+                                    <li class="mb-2">Find potential partners and collaborators</li>
+                                    <li class="mb-2">Create a realistic timeline with milestones</li>
+                                </ul>
+                                <div class="d-grid gap-2 d-md-flex">
+                                    <a href="https://claude.ai" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-robot me-1"></i>Ask Claude
+                                    </a>
+                                    <a href="https://chat.openai.com" target="_blank" class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-comments me-1"></i>Ask ChatGPT
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Activities -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>Key Activities</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">List the main activities and tasks needed to bring your solution to life.</p>
+                        <textarea class="form-control" id="keyActivities" rows="8" placeholder="Example:
+• Research and validate target market
+• Develop minimum viable product (MVP)
+• Create marketing and branding materials
+• Set up business operations and processes
+• Build partnerships with suppliers/distributors
+• Launch pilot testing with early users
+• Gather feedback and iterate on product
+• Scale production and marketing efforts"></textarea>
+                    </div>
+                </div>
+
+                <!-- Key Resources -->
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0"><i class="fas fa-boxes me-2"></i>Key Resources</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Identify the resources you'll need - financial, human, physical, and intellectual.</p>
+                        <textarea class="form-control" id="keyResources" rows="8" placeholder="Example:
+Financial Resources:
+• Initial funding: $X for development and launch
+• Operating capital for first 6 months
+
+Human Resources:
+• Technical developer/programmer
+• Marketing specialist
+• Business advisor/mentor
+
+Physical Resources:
+• Office space or co-working membership
+• Computer equipment and software licenses
+• Prototype materials and tools
+
+Intellectual Resources:
+• Market research and user data
+• Technical knowledge and expertise
+• Brand and design assets"></textarea>
+                    </div>
+                </div>
+
+                <!-- Key Partners -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0"><i class="fas fa-handshake me-2"></i>Key Partners</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Identify potential partners, suppliers, mentors, and collaborators who can help you succeed.</p>
+                        <textarea class="form-control" id="keyPartners" rows="8" placeholder="Example:
+Strategic Partners:
+• Technology partners for development
+• Distribution partners for market access
+• Marketing partners for user acquisition
+
+Suppliers:
+• Raw material or component suppliers
+• Service providers (hosting, payment processing)
+• Manufacturing or production partners
+
+Advisors & Mentors:
+• Industry experts and experienced entrepreneurs
+• Academic advisors and research institutions
+• Professional service providers (legal, accounting)
+
+Potential Investors:
+• Angel investors or venture capital firms
+• Government grants and funding programs
+• Crowdfunding platforms and communities"></textarea>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Timeline</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Create a realistic timeline with key milestones and deadlines.</p>
+                        <textarea class="form-control" id="timeline" rows="10" placeholder="Example:
+Month 1-2: Research & Planning Phase
+• Complete market research and competitor analysis
+• Finalize product requirements and specifications
+• Secure initial funding and resources
+
+Month 3-4: Development Phase
+• Build minimum viable product (MVP)
+• Conduct initial user testing
+• Refine product based on feedback
+
+Month 5-6: Pre-Launch Phase
+• Complete product development
+• Create marketing materials and website
+• Build partnerships and distribution channels
+
+Month 7-8: Launch Phase
+• Soft launch with limited user base
+• Gather feedback and make improvements
+• Begin broader marketing and promotion
+
+Month 9-12: Growth Phase
+• Scale operations and user acquisition
+• Monitor metrics and optimize performance
+• Plan for next phase of development"></textarea>
+                    </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Pro Tips</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>💡 "Start Small, Learn Fast"</strong>
+                                    <p class="small mb-2">Begin with a minimal version to test your assumptions quickly.</p>
+                                </div>
+                                
+                                <ol class="small">
+                                    <li class="mb-2">"Plan for setbacks"
+                                        <span class="text-muted">(Add buffer time for unexpected challenges.)</span>
+                                    </li>
+                                    <li class="mb-2">"Focus on critical path" 
+                                        <span class="text-muted">(Identify tasks that must be completed first.)</span>
+                                    </li>
+                                    <li class="mb-2">"Build your network early" 
+                                        <span class="text-muted">(Start connecting with potential partners now.)</span>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Success Factors</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="factor-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-primary">Clear Milestones</strong>
+                                        <span class="text-muted">Progress</span>
+                                    </div>
+                                    <small class="text-muted">Set specific, measurable goals for each phase</small>
+                                </div>
+                                
+                                <div class="factor-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-success">Resource Planning</strong>
+                                        <span class="text-muted">Preparation</span>
+                                    </div>
+                                    <small class="text-muted">Secure necessary resources before you need them</small>
+                                </div>
+                                
+                                <div class="factor-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-warning">Risk Management</strong>
+                                        <span class="text-muted">Planning</span>
+                                    </div>
+                                    <small class="text-muted">Identify potential risks and mitigation strategies</small>
+                                </div>
+                                
+                                <div class="factor-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-info">Team Building</strong>
+                                        <span class="text-muted">Collaboration</span>
+                                    </div>
+                                    <small class="text-muted">Assemble the right team with complementary skills</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" onclick="goToPreviousStep()">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveAndContinue()">
+                        Save & Continue<i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="step6-script.js"></script>
+</body>
+</html>
