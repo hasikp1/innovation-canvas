@@ -288,184 +288,595 @@ function setPrintDate() {
     document.getElementById('printDate').textContent = new Date().toLocaleDateString();
 }
 
-// Export to PDF function
+// Create PDF template-based export function matching template.html design
+function createPDFTemplate() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    
+    // PDF dimensions
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 15;
+    const contentWidth = pageWidth - (margin * 2);
+    
+    let currentY = margin;
+    
+    // Helper function to check if we need a new page
+    function checkNewPage(requiredHeight) {
+        if (currentY + requiredHeight > pageHeight - margin - 10) {
+            pdf.addPage();
+            currentY = margin;
+            return true;
+        }
+        return false;
+    }
+    
+    // Helper function to add the elegant gradient header banner
+    function addHeaderBanner(stats) {
+        // Create elegant gradient effect with multiple layers
+        pdf.setFillColor(45, 55, 72); // Dark slate
+        pdf.roundedRect(margin, currentY, contentWidth, 55, 4, 4, 'F');
+        
+        // Add gradient overlay effect
+        pdf.setFillColor(59, 130, 246); // Blue overlay
+        pdf.setGState(new pdf.GState({opacity: 0.8}));
+        pdf.roundedRect(margin, currentY, contentWidth, 55, 4, 4, 'F');
+        pdf.setGState(new pdf.GState({opacity: 1})); // Reset opacity
+        
+        // Title with elegant typography
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(22);
+        pdf.setTextColor(255, 255, 255);
+        pdf.text('Innovation Canvas Complete', pageWidth/2, currentY + 18, { align: 'center' });
+        
+        // Subtitle with better spacing
+        pdf.setFont("helvetica", 'normal');
+        pdf.setFontSize(11);
+        pdf.setTextColor(229, 231, 235); // Light gray
+        pdf.text('Professional Project Summary & Analysis', pageWidth/2, currentY + 28, { align: 'center' });
+        
+        // Stats with enhanced design
+        const statWidth = contentWidth / 3;
+        stats.forEach((stat, index) => {
+            const x = margin + (index * statWidth) + (statWidth / 2);
+            
+            // Stat background circle
+            pdf.setFillColor(255, 255, 255);
+            pdf.setGState(new pdf.GState({opacity: 0.15}));
+            pdf.circle(x, currentY + 42, 12, 'F');
+            pdf.setGState(new pdf.GState({opacity: 1}));
+            
+            // Stat value with better typography
+            pdf.setFont("helvetica", 'bold');
+            pdf.setFontSize(16);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(stat.value.toString(), x, currentY + 40, { align: 'center' });
+            
+            // Stat label with refined spacing
+            pdf.setFont("helvetica", 'normal');
+            pdf.setFontSize(8);
+            pdf.setTextColor(203, 213, 225); // Lighter gray
+            pdf.text(stat.label, x, currentY + 48, { align: 'center' });
+        });
+        
+        currentY += 70;
+    }
+    
+    // Helper function to add main content white background
+    function addMainContentBackground() {
+        pdf.setFillColor(255, 255, 255);
+        pdf.roundedRect(margin, currentY, contentWidth, pageHeight - currentY - margin - 10, 3, 3, 'F');
+        
+        // Add subtle border
+        pdf.setDrawColor(224, 224, 224);
+        pdf.setLineWidth(0.2);
+        pdf.roundedRect(margin, currentY, contentWidth, pageHeight - currentY - margin - 10, 3, 3, 'S');
+        
+        currentY += 15; // Padding inside content area
+    }
+    
+    // Helper function to add title bar with enhanced design
+    function addTitleBar() {
+        // Main title with better typography
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(18);
+        pdf.setTextColor(30, 41, 59); // Slate-800
+        pdf.text('Innovation Project Overview', margin + 10, currentY);
+        
+        // Subtitle with modern styling
+        pdf.setFont("helvetica", 'normal');
+        pdf.setFontSize(10);
+        pdf.setTextColor(100, 116, 139); // Slate-500
+        pdf.text('Comprehensive analysis and strategic summary', margin + 10, currentY + 10);
+        
+        // Enhanced separator with gradient effect
+        pdf.setDrawColor(226, 232, 240); // Slate-200
+        pdf.setLineWidth(0.5);
+        pdf.line(margin + 10, currentY + 18, contentWidth + margin - 10, currentY + 18);
+        
+        // Add accent line
+        pdf.setDrawColor(59, 130, 246); // Blue-500
+        pdf.setLineWidth(2);
+        pdf.line(margin + 10, currentY + 19, margin + 60, currentY + 19);
+        
+        currentY += 30;
+    }
+    
+    // Helper function to create 3-column grid layout
+    function create3ColumnGrid() {
+        const columnWidth = (contentWidth - 40) / 3; // 20px margins + 20px between columns
+        const columnGap = 10;
+        
+        return {
+            column1: { x: margin + 10, width: columnWidth },
+            column2: { x: margin + 10 + columnWidth + columnGap, width: columnWidth },
+            column3: { x: margin + 10 + (columnWidth + columnGap) * 2, width: columnWidth },
+            startY: currentY
+        };
+    }
+    
+    // Helper function to add section in column with enhanced styling
+    function addColumnSection(title, content, x, width, yPos) {
+        let sectionY = yPos;
+        
+        // Add section background
+        pdf.setFillColor(248, 250, 252); // Gray-50
+        pdf.roundedRect(x - 3, sectionY - 5, width + 6, 8, 2, 2, 'F');
+        
+        // Section title with modern typography and colors
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(9);
+        
+        // Color-coded section headers
+        const sectionColors = {
+            'PROBLEM': [239, 68, 68], // Red-500
+            'TARGET USERS': [245, 158, 11], // Amber-500
+            'SOLUTION': [34, 197, 94], // Green-500
+            'IMPLEMENTATION': [168, 85, 247], // Purple-500
+            'KEY METRICS': [59, 130, 246], // Blue-500
+            'RESOURCES': [107, 114, 128] // Gray-500
+        };
+        
+        const color = sectionColors[title.toUpperCase()] || [107, 114, 128];
+        pdf.setTextColor(...color);
+        pdf.text(title.toUpperCase(), x, sectionY);
+        sectionY += 15;
+        
+        // Section content with improved typography
+        pdf.setFont("helvetica", 'normal');
+        pdf.setFontSize(9);
+        pdf.setTextColor(51, 65, 85); // Slate-700
+        
+        if (Array.isArray(content)) {
+            content.forEach((item, index) => {
+                // Add bullet points for multiple items
+                if (content.length > 1 && item.length < 100) {
+                    pdf.setTextColor(156, 163, 175); // Gray-400
+                    pdf.text('•', x, sectionY);
+                    pdf.setTextColor(51, 65, 85); // Slate-700
+                    
+                    const lines = pdf.splitTextToSize(item, width - 10);
+                    lines.forEach((line, lineIndex) => {
+                        pdf.text(line, x + (lineIndex === 0 ? 6 : 0), sectionY);
+                        sectionY += 4;
+                    });
+                } else {
+                    const lines = pdf.splitTextToSize(item, width - 5);
+                    lines.forEach(line => {
+                        pdf.text(line, x, sectionY);
+                        sectionY += 4;
+                    });
+                }
+                sectionY += 3;
+            });
+        } else {
+            const lines = pdf.splitTextToSize(content, width - 5);
+            lines.forEach(line => {
+                pdf.text(line, x, sectionY);
+                sectionY += 4;
+            });
+        }
+        
+        return sectionY + 20; // Return next section start position
+    }
+    
+    // Helper function to add vertical separator lines between columns
+    function addColumnSeparators(grid) {
+        pdf.setDrawColor(224, 224, 224);
+        pdf.setLineWidth(0.2);
+        
+        // Line after column 1
+        const line1X = grid.column1.x + grid.column1.width + 5;
+        pdf.line(line1X, grid.startY, line1X, currentY);
+        
+        // Line after column 2
+        const line2X = grid.column2.x + grid.column2.width + 5;
+        pdf.line(line2X, grid.startY, line2X, currentY);
+    }
+    
+    // Helper function to add uploaded resources section
+    function addResourcesSection(images, links) {
+        if (images.length === 0 && links.length === 0) return;
+        
+        checkNewPage(60);
+        currentY += 25;
+        
+        // Section title with enhanced styling
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(16);
+        pdf.setTextColor(30, 41, 59); // Slate-800
+        pdf.text('Project Resources', margin + 10, currentY);
+        
+        // Add decorative underline
+        pdf.setDrawColor(99, 102, 241); // Indigo-500
+        pdf.setLineWidth(2);
+        pdf.line(margin + 10, currentY + 3, margin + 80, currentY + 3);
+        
+        currentY += 20;
+        
+        // Resources grid
+        const resourceWidth = (contentWidth - 40) / 2; // 2 columns
+        const resourceGap = 20;
+        let resourceX = margin + 10;
+        let resourceY = currentY;
+        let col = 0;
+        
+        // Add images
+        images.forEach((image, index) => {
+            if (col >= 2) {
+                col = 0;
+                resourceX = margin + 10;
+                resourceY += 60;
+            }
+            
+            // Enhanced resource card background with shadow effect
+            pdf.setFillColor(255, 255, 255);
+            pdf.roundedRect(resourceX, resourceY, resourceWidth, 50, 3, 3, 'F');
+            pdf.setDrawColor(226, 232, 240); // Slate-200
+            pdf.setLineWidth(0.5);
+            pdf.roundedRect(resourceX, resourceY, resourceWidth, 50, 3, 3, 'S');
+            
+            try {
+                // Add image
+                pdf.addImage(image.data, 'JPEG', resourceX + 5, resourceY + 5, resourceWidth - 10, 30);
+                
+                // Add caption with better typography
+                pdf.setFont("helvetica", 'normal');
+                pdf.setFontSize(8);
+                pdf.setTextColor(71, 85, 105); // Slate-600
+                pdf.text(image.title, resourceX + resourceWidth/2, resourceY + 42, { align: 'center' });
+                
+                // Add modern tag with gradient colors
+                const tagColor = image.type === 'prototype' ? [34, 197, 94] : [59, 130, 246]; // Green or Blue
+                pdf.setFillColor(...tagColor);
+                pdf.roundedRect(resourceX + resourceWidth/2 - 18, resourceY + 44, 36, 5, 2, 2, 'F');
+                pdf.setFont("helvetica", 'bold');
+                pdf.setFontSize(7);
+                pdf.setTextColor(255, 255, 255);
+                pdf.text(image.type === 'prototype' ? 'PROTOTYPE' : 'WIREFRAME', resourceX + resourceWidth/2, resourceY + 47, { align: 'center' });
+                
+            } catch (error) {
+                pdf.setFontSize(8);
+                pdf.setTextColor(150, 150, 150);
+                pdf.text('Image could not be loaded', resourceX + resourceWidth/2, resourceY + 25, { align: 'center' });
+            }
+            
+            resourceX += resourceWidth + resourceGap;
+            col++;
+        });
+        
+        // Add links
+        links.forEach((link, index) => {
+            if (col >= 2) {
+                col = 0;
+                resourceX = margin + 10;
+                resourceY += 60;
+            }
+            
+            // Enhanced link card background
+            pdf.setFillColor(255, 255, 255);
+            pdf.roundedRect(resourceX, resourceY, resourceWidth, 50, 3, 3, 'F');
+            pdf.setDrawColor(226, 232, 240); // Slate-200
+            pdf.setLineWidth(0.5);
+            pdf.roundedRect(resourceX, resourceY, resourceWidth, 50, 3, 3, 'S');
+            
+            // Enhanced URL display with modern styling
+            pdf.setFillColor(241, 245, 249); // Blue-50
+            pdf.roundedRect(resourceX + 8, resourceY + 12, resourceWidth - 16, 10, 2, 2, 'F');
+            
+            const displayUrl = link.url.length > 25 ? link.url.substring(0, 25) + '...' : link.url;
+            pdf.setFont("helvetica", 'normal');
+            pdf.setFontSize(7);
+            pdf.setTextColor(71, 85, 105); // Slate-600
+            pdf.text(displayUrl, resourceX + resourceWidth/2, resourceY + 18, { align: 'center' });
+            
+            // Modern clickable link button
+            pdf.setFillColor(59, 130, 246); // Blue-500
+            pdf.roundedRect(resourceX + resourceWidth/2 - 20, resourceY + 28, 40, 8, 2, 2, 'F');
+            pdf.setFont("helvetica", 'bold');
+            pdf.setFontSize(7);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text('OPEN LINK', resourceX + resourceWidth/2, resourceY + 33, { align: 'center' });
+            pdf.link(resourceX + resourceWidth/2 - 20, resourceY + 28, 40, 8, { url: link.url });
+            
+            // Enhanced tag
+            pdf.setFillColor(168, 85, 247); // Purple-500
+            pdf.roundedRect(resourceX + resourceWidth/2 - 22, resourceY + 42, 44, 5, 2, 2, 'F');
+            pdf.setFont("helvetica", 'bold');
+            pdf.setFontSize(7);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text('EXTERNAL LINK', resourceX + resourceWidth/2, resourceY + 45, { align: 'center' });
+            
+            resourceX += resourceWidth + resourceGap;
+            col++;
+        });
+        
+        currentY = resourceY + 70;
+    }
+    
+    // Helper function to add footer details with enhanced design
+    function addFooterDetails() {
+        checkNewPage(50);
+        currentY += 25;
+        
+        // Enhanced footer separator with gradient
+        pdf.setDrawColor(226, 232, 240); // Slate-200
+        pdf.setLineWidth(0.5);
+        pdf.line(margin + 10, currentY, contentWidth + margin - 10, currentY);
+        
+        // Add accent line
+        pdf.setDrawColor(99, 102, 241); // Indigo-500
+        pdf.setLineWidth(2);
+        pdf.line(margin + 10, currentY + 1, margin + 100, currentY + 1);
+        
+        currentY += 20;
+        
+        // Footer content in 3 columns
+        const footerColumnWidth = (contentWidth - 40) / 3;
+        
+        // Canvas Details with modern styling
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(10);
+        pdf.setTextColor(30, 41, 59); // Slate-800
+        pdf.text('Project Details', margin + 10, currentY);
+        
+        pdf.setFont("helvetica", 'normal');
+        pdf.setFontSize(8);
+        pdf.setTextColor(100, 116, 139); // Slate-500
+        pdf.text(`Created: ${new Date().toLocaleDateString()}`, margin + 10, currentY + 10);
+        pdf.text(`Exported: ${new Date().toLocaleDateString()}`, margin + 10, currentY + 16);
+        pdf.text('Framework: Innovation Canvas Pro', margin + 10, currentY + 22);
+        
+        // Project Status with modern design
+        const statusX = margin + 10 + footerColumnWidth * 2;
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(10);
+        pdf.setTextColor(30, 41, 59); // Slate-800
+        pdf.text('Completion Status', statusX, currentY);
+        
+        // Modern status badge
+        pdf.setFillColor(34, 197, 94); // Green-500
+        pdf.roundedRect(statusX, currentY + 6, 35, 8, 3, 3, 'F');
+        pdf.setFont("helvetica", 'bold');
+        pdf.setFontSize(8);
+        pdf.setTextColor(255, 255, 255);
+        pdf.text('COMPLETED', statusX + 17.5, currentY + 11, { align: 'center' });
+        
+        pdf.setFont("helvetica", 'normal');
+        pdf.setFontSize(8);
+        pdf.setTextColor(100, 116, 139); // Slate-500
+        pdf.text('All 7 sections finished', statusX, currentY + 20);
+        
+        // Modern progress bar
+        pdf.setFillColor(241, 245, 249); // Blue-50
+        pdf.roundedRect(statusX, currentY + 26, 60, 4, 2, 2, 'F');
+        pdf.setFillColor(34, 197, 94); // Green-500
+        pdf.roundedRect(statusX, currentY + 26, 60, 4, 2, 2, 'F'); // 100% complete
+        
+        currentY += 40;
+    }
+    
+    return {
+        pdf,
+        addHeaderBanner,
+        addMainContentBackground,
+        addTitleBar,
+        create3ColumnGrid,
+        addColumnSection,
+        addColumnSeparators,
+        addResourcesSection,
+        addFooterDetails,
+        checkNewPage,
+        getCurrentY: () => currentY,
+        setCurrentY: (y) => { currentY = y; },
+        addSpace: (space = 5) => { currentY += space; }
+    };
+}
+
+// Enhanced PDF export function using template.html design
 async function exportToPDF() {
-    console.log('exportToPDF called');
+    console.log('exportToPDF called - using template.html design approach');
     showNotification('Generating PDF... Please wait.', 'info');
     
     try {
-        // Wait a moment to ensure page is fully rendered
-        await new Promise(resolve => setTimeout(resolve, 100));
+        const template = createPDFTemplate();
+        const { 
+            pdf, 
+            addHeaderBanner, 
+            addMainContentBackground, 
+            addTitleBar, 
+            create3ColumnGrid, 
+            addColumnSection, 
+            addColumnSeparators,
+            addResourcesSection,
+            addFooterDetails
+        } = template;
         
-        // Check if main content exists
-        const mainContent = document.querySelector('.main-content');
-        if (!mainContent) {
-            throw new Error('Main content not found');
+        // Step 1: Add header banner with stats
+        const stats = [
+            {
+                value: document.getElementById('sectionsCompleted')?.textContent || '7',
+                label: 'Sections Completed'
+            },
+            {
+                value: document.getElementById('ideasGenerated')?.textContent || '0',
+                label: 'Ideas Generated'
+            },
+            {
+                value: document.getElementById('resourcesUploaded')?.textContent || '0',
+                label: 'Resources Uploaded'
+            }
+        ];
+        addHeaderBanner(stats);
+        
+        // Step 2: Add main content background
+        addMainContentBackground();
+        
+        // Step 3: Add title bar
+        addTitleBar();
+        
+        // Step 4: Create 3-column grid and add content
+        const grid = create3ColumnGrid();
+        let column1Y = grid.startY;
+        let column2Y = grid.startY;
+        let column3Y = grid.startY;
+        
+        // Column 1: Problem and Target Users
+        // Problem section
+        const problemContent = canvasData.step1?.problemStatement || 'No problem statement defined';
+        column1Y = addColumnSection('Problem', [`Problem: ${problemContent}`], grid.column1.x, grid.column1.width, column1Y);
+        
+        // Target Users section
+        const targetUsersContent = [];
+        if (canvasData.step2?.primaryUsers) {
+            targetUsersContent.push(`Primary Users: ${canvasData.step2.primaryUsers}`);
         }
-        
-        console.log('Main content found, proceeding with PDF generation');
-        
-        // Hide no-print elements and show print-only elements
-        const noPrintElements = document.querySelectorAll('.no-print');
-        const printOnlyElements = document.querySelectorAll('.print-only');
-        
-        noPrintElements.forEach(el => el.style.display = 'none');
-        printOnlyElements.forEach(el => el.style.display = 'block');
-        
-        // Make sure uploaded resources are visible for PDF
-        const uploadedResourcesSection = document.getElementById('uploadedResourcesSection');
-        if (uploadedResourcesSection) {
-            uploadedResourcesSection.style.display = 'block';
-            console.log('Uploaded resources section made visible');
+        if (canvasData.step2?.keyNeeds) {
+            targetUsersContent.push(`Key Needs: ${canvasData.step2.keyNeeds}`);
         }
-        
-        // Wait for any images to load
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
-        console.log('Starting html2canvas capture');
-        
-        // Use html2canvas to capture the content with better settings for images
-        const canvas = await html2canvas(mainContent, {
-            scale: 1.5,
-            useCORS: true,
-            allowTaint: true,
-            foreignObjectRendering: true,
-            logging: true,
-            height: mainContent.scrollHeight,
-            width: mainContent.scrollWidth
-        });
-        
-        console.log('html2canvas capture completed, canvas size:', canvas.width, 'x', canvas.height);
-        
-        // Restore visibility
-        noPrintElements.forEach(el => el.style.display = '');
-        printOnlyElements.forEach(el => el.style.display = 'none');
-        
-        // Check if canvas has content
-        if (canvas.width === 0 || canvas.height === 0) {
-            throw new Error('Canvas is empty');
+        if (canvasData.step2?.biggestFrustration) {
+            targetUsersContent.push(`Biggest Frustration: ${canvasData.step2.biggestFrustration}`);
         }
+        if (targetUsersContent.length === 0) {
+            targetUsersContent.push('No target users defined');
+        }
+        column1Y = addColumnSection('Target Users', targetUsersContent, grid.column1.x, grid.column1.width, column1Y);
         
-        // Create PDF
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
-        console.log('PDF dimensions:', imgWidth, 'x', imgHeight);
-        
-        // Add the main content image
-        if (imgHeight > 297) { // A4 height is 297mm
-            const pageHeight = 297;
-            const totalPages = Math.ceil(imgHeight / pageHeight);
-            console.log('Creating multi-page PDF with', totalPages, 'pages');
-            
-            for (let i = 0; i < totalPages; i++) {
-                if (i > 0) {
-                    pdf.addPage();
+        // Column 2: Solution and Implementation
+        // Solution section
+        const solutionContent = [];
+        if (canvasData.step4?.selectedSolution !== null && canvasData.step3?.ideas) {
+            const selectedIdea = canvasData.step3.ideas[canvasData.step4.selectedSolution];
+            if (selectedIdea) {
+                solutionContent.push(`${selectedIdea.title}`);
+                solutionContent.push(selectedIdea.content);
+                if (canvasData.step4.refinement) {
+                    solutionContent.push(`Implementation: ${canvasData.step4.refinement}`);
                 }
-                
-                const sourceY = (canvas.height * pageHeight * i) / imgWidth;
-                const sourceHeight = Math.min(canvas.height * pageHeight / imgWidth, canvas.height - sourceY);
-                
-                // Create a temporary canvas for this page
-                const pageCanvas = document.createElement('canvas');
-                const pageCtx = pageCanvas.getContext('2d');
-                pageCanvas.width = canvas.width;
-                pageCanvas.height = sourceHeight;
-                
-                pageCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
-                
-                pdf.addImage(pageCanvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, pageHeight);
             }
         } else {
-            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
+            solutionContent.push('No solution selected');
         }
+        column2Y = addColumnSection('Solution', solutionContent, grid.column2.x, grid.column2.width, column2Y);
         
-        // Add wireframe hyperlinks after the uploaded resources section
-        if (canvasData.step6?.wireframeLinks && canvasData.step6.wireframeLinks.length > 0) {
-            console.log('Adding wireframe hyperlinks to PDF');
+        // Implementation section
+        const implementationContent = [];
+        if (canvasData.step6?.keyActivities) {
+            implementationContent.push(`Key Activities: ${canvasData.step6.keyActivities.split('\n').slice(0, 3).join(' • ')}`);
+        }
+        if (canvasData.step6?.timeline) {
+            implementationContent.push(`Timeline: ${canvasData.step6.timeline.split('\n')[0]}`);
+        }
+        if (implementationContent.length === 0) {
+            implementationContent.push('No implementation plan available');
+        }
+        column2Y = addColumnSection('Implementation', implementationContent, grid.column2.x, grid.column2.width, column2Y);
+        
+        // Column 3: Key Metrics and Resources
+        // Key Metrics section
+        const metricsContent = [];
+        if (canvasData.step4?.selectedSolution !== null && canvasData.step4?.evaluations) {
+            const solutionIndex = canvasData.step4.selectedSolution;
+            const evaluation = canvasData.step4.evaluations[solutionIndex];
             
-            // Find the uploaded resources section to position links after it
-            const uploadedResourcesSection = document.getElementById('uploadedResourcesSection');
-            
-            if (uploadedResourcesSection && uploadedResourcesSection.style.display !== 'none') {
-                const resourcesRect = uploadedResourcesSection.getBoundingClientRect();
-                const mainContentRect = mainContent.getBoundingClientRect();
-                
-                // Calculate position after the uploaded resources section
-                const relativeY = (resourcesRect.bottom - mainContentRect.top) / mainContentRect.height;
-                let linkY = (relativeY * imgHeight) + 3; // 3mm below the resources section
-                
-                // Determine which page to add links to
-                let targetPage = 0;
-                if (imgHeight > 297) {
-                    const pageHeight = 297;
-                    targetPage = Math.floor(linkY / pageHeight);
-                    linkY = linkY % pageHeight;
-                    
-                    // If we're too close to the bottom, move to next page
-                    if (linkY > 280) {
-                        targetPage++;
-                        linkY = 20;
-                    }
-                }
-                
-                // Ensure we have the right page
-                if (targetPage >= pdf.internal.getNumberOfPages()) {
-                    pdf.addPage();
-                }
-                
-                // Set the page for adding links
-                const currentPage = pdf.internal.getCurrentPageInfo().pageNumber;
-                if (targetPage + 1 !== currentPage) {
-                    pdf.setPage(targetPage + 1);
-                }
-                
-                // Add wireframe links section
-                pdf.setFontSize(10);
-                pdf.setTextColor(0, 0, 0);
-                pdf.text('Wireframe Links:', 10, linkY);
-                linkY += 5;
-                
-                pdf.setFontSize(8);
-                pdf.setTextColor(0, 0, 255); // Blue for hyperlinks
-                
-                canvasData.step6.wireframeLinks.forEach((wireframeLink, index) => {
-                    // Check if we need a new page
-                    if (linkY > 285) {
-                        pdf.addPage();
-                        linkY = 20;
-                    }
-                    
-                    // Add the clickable hyperlink
-                    const linkText = `• ${wireframeLink.url}`;
-                    pdf.text(linkText, 12, linkY);
-                    
-                    // Add clickable area
-                    const textWidth = pdf.getTextWidth(linkText);
-                    pdf.link(12, linkY - 3, textWidth, 4, {
-                        url: wireframeLink.url
-                    });
-                    
-                    console.log(`Added wireframe hyperlink: ${wireframeLink.url} at position (12, ${linkY})`);
-                    linkY += 4; // Move to next line
-                });
-                
-                // Restore original page if we changed it
-                if (targetPage + 1 !== currentPage) {
-                    pdf.setPage(currentPage);
-                }
+            if (evaluation) {
+                metricsContent.push(`Feasibility: ${evaluation.feasibility || 0}/5`);
+                metricsContent.push(`Impact: ${evaluation.impact || 0}/5`);
+                metricsContent.push(`Resources: ${evaluation.resources || 0}/5`);
+                metricsContent.push(`User Appeal: ${evaluation.userAppeal || 0}/5`);
+                metricsContent.push(`Total Score: ${evaluation.total || 0}/20`);
             }
+        } else {
+            metricsContent.push('No evaluation scores available');
+        }
+        column3Y = addColumnSection('Key Metrics', metricsContent, grid.column3.x, grid.column3.width, column3Y);
+        
+        // Resources section
+        const resourcesContent = [];
+        if (canvasData.step6?.keyResources) {
+            resourcesContent.push(canvasData.step6.keyResources.split('\n').slice(0, 3).join(' • '));
+        }
+        if (canvasData.step6?.keyPartners) {
+            resourcesContent.push(`Partners: ${canvasData.step6.keyPartners.split('\n')[0]}`);
+        }
+        if (resourcesContent.length === 0) {
+            resourcesContent.push('No resources identified');
+        }
+        column3Y = addColumnSection('Resources', resourcesContent, grid.column3.x, grid.column3.width, column3Y);
+        
+        // Update currentY to the tallest column
+        template.setCurrentY(Math.max(column1Y, column2Y, column3Y));
+        
+        // Add column separators
+        addColumnSeparators(grid);
+        
+        // Step 5: Add uploaded resources section
+        let allImages = [];
+        let allLinks = [];
+        
+        // Collect prototype images
+        if (canvasData.step5?.prototypes && canvasData.step5.prototypes.length > 0) {
+            canvasData.step5.prototypes.forEach(prototype => {
+                if (prototype.imageData) {
+                    allImages.push({
+                        data: prototype.imageData,
+                        title: prototype.title,
+                        type: 'prototype'
+                    });
+                }
+            });
         }
         
-        // Generate filename with current date
+        // Collect wireframe images
+        if (canvasData.step6?.uploadedFiles && canvasData.step6.uploadedFiles.length > 0) {
+            canvasData.step6.uploadedFiles.forEach(file => {
+                if (file.data) {
+                    allImages.push({
+                        data: file.data,
+                        title: file.name,
+                        type: 'wireframe'
+                    });
+                }
+            });
+        }
+        
+        // Collect wireframe links
+        if (canvasData.step6?.wireframeLinks && canvasData.step6.wireframeLinks.length > 0) {
+            allLinks = canvasData.step6.wireframeLinks;
+        }
+        
+        addResourcesSection(allImages, allLinks);
+        
+        // Step 6: Add footer details
+        addFooterDetails();
+        
+        // Generate filename and save
         const filename = `Innovation_Canvas_Summary_${new Date().toISOString().split('T')[0]}.pdf`;
         pdf.save(filename);
         
-        console.log('PDF saved successfully');
-        showNotification('PDF exported successfully!', 'success');
+        console.log('PDF generated successfully using template.html design');
+        showNotification('PDF exported successfully with clean template design!', 'success');
+        
     } catch (error) {
         console.error('Error generating PDF:', error);
         showNotification('Error generating PDF: ' + error.message, 'error');
