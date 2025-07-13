@@ -170,6 +170,30 @@ function updateMetaInformation() {
 
 // Display uploaded resources
 function displayUploadedResources() {
+    console.log('displayUploadedResources called');
+    console.log('Step 5 prototypes:', canvasData.step5?.prototypes?.length || 0);
+    console.log('Step 6 uploadedFiles:', canvasData.step6?.uploadedFiles?.length || 0);
+    console.log('Step 6 wireframeLinks:', canvasData.step6?.wireframeLinks?.length || 0);
+    
+    // Debug: Show actual prototype data
+    if (canvasData.step5?.prototypes) {
+        console.log('Step 5 prototypes details:', canvasData.step5.prototypes.map(p => ({
+            title: p.title,
+            type: p.type,
+            id: p.id,
+            timestamp: p.timestamp
+        })));
+    }
+    
+    // Debug: Show actual uploaded files data
+    if (canvasData.step6?.uploadedFiles) {
+        console.log('Step 6 uploadedFiles details:', canvasData.step6.uploadedFiles.map(f => ({
+            name: f.name,
+            type: f.type,
+            id: f.id
+        })));
+    }
+    
     let hasResources = false;
     const resourcesContainer = document.getElementById('allResourcesList');
     
@@ -179,7 +203,14 @@ function displayUploadedResources() {
     // Step 5 Prototypes
     if (canvasData.step5?.prototypes && canvasData.step5.prototypes.length > 0) {
         hasResources = true;
-        canvasData.step5.prototypes.forEach(prototype => {
+        // Remove duplicates based on ID (more reliable than imageData)
+        const uniquePrototypes = canvasData.step5.prototypes.filter((prototype, index, self) => 
+            index === self.findIndex(p => p.id === prototype.id)
+        );
+        
+        console.log('After deduplication - unique prototypes:', uniquePrototypes.length);
+        
+        uniquePrototypes.forEach(prototype => {
             const resourceDiv = document.createElement('div');
             resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
             resourceDiv.innerHTML = `
@@ -196,7 +227,12 @@ function displayUploadedResources() {
     // Step 6 Wireframe Images
     if (canvasData.step6?.uploadedFiles && canvasData.step6.uploadedFiles.length > 0) {
         hasResources = true;
-        canvasData.step6.uploadedFiles.forEach(file => {
+        // Remove duplicates based on ID if available, otherwise data and name
+        const uniqueFiles = canvasData.step6.uploadedFiles.filter((file, index, self) => 
+            index === self.findIndex(f => f.id ? f.id === file.id : (f.data === file.data && f.name === file.name))
+        );
+        
+        uniqueFiles.forEach(file => {
             const resourceDiv = document.createElement('div');
             resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
             resourceDiv.innerHTML = `
@@ -210,13 +246,18 @@ function displayUploadedResources() {
         });
     }
 
-    // Step 6 Wireframe Links
+    // Step 6 Wireframe Links - Display as cards on webpage but hide during PDF export
     if (canvasData.step6?.wireframeLinks && canvasData.step6.wireframeLinks.length > 0) {
         hasResources = true;
-        canvasData.step6.wireframeLinks.forEach(link => {
+        // Remove duplicates based on URL
+        const uniqueLinks = canvasData.step6.wireframeLinks.filter((link, index, self) => 
+            index === self.findIndex(l => l.url === link.url)
+        );
+        
+        uniqueLinks.forEach((link, linkIndex) => {
             const resourceDiv = document.createElement('div');
-            resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
-            const displayUrl = link.url.length > 30 ? link.url.substring(0, 30) + '...' : link.url;
+            resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3 no-print'; // Add no-print class
+            const displayUrl = link.url.length > 40 ? link.url.substring(0, 40) + '...' : link.url;
             resourceDiv.innerHTML = `
                 <div class="text-center">
                     <div class="wireframe-link-display mb-2 p-3 border rounded bg-light">
@@ -238,6 +279,8 @@ function displayUploadedResources() {
     } else {
         document.getElementById('uploadedResourcesSection').style.display = 'none';
     }
+    
+    console.log('displayUploadedResources completed');
 }
 
 // Set print date
@@ -312,7 +355,7 @@ async function exportToPDF() {
         
         console.log('PDF dimensions:', imgWidth, 'x', imgHeight);
         
-        // If content is too long, split into multiple pages
+        // Add the main content image
         if (imgHeight > 297) { // A4 height is 297mm
             const pageHeight = 297;
             const totalPages = Math.ceil(imgHeight / pageHeight);
@@ -338,6 +381,83 @@ async function exportToPDF() {
             }
         } else {
             pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
+        }
+        
+        // Add wireframe hyperlinks after the uploaded resources section
+        if (canvasData.step6?.wireframeLinks && canvasData.step6.wireframeLinks.length > 0) {
+            console.log('Adding wireframe hyperlinks to PDF');
+            
+            // Find the uploaded resources section to position links after it
+            const uploadedResourcesSection = document.getElementById('uploadedResourcesSection');
+            
+            if (uploadedResourcesSection && uploadedResourcesSection.style.display !== 'none') {
+                const resourcesRect = uploadedResourcesSection.getBoundingClientRect();
+                const mainContentRect = mainContent.getBoundingClientRect();
+                
+                // Calculate position after the uploaded resources section
+                const relativeY = (resourcesRect.bottom - mainContentRect.top) / mainContentRect.height;
+                let linkY = (relativeY * imgHeight) + 3; // 3mm below the resources section
+                
+                // Determine which page to add links to
+                let targetPage = 0;
+                if (imgHeight > 297) {
+                    const pageHeight = 297;
+                    targetPage = Math.floor(linkY / pageHeight);
+                    linkY = linkY % pageHeight;
+                    
+                    // If we're too close to the bottom, move to next page
+                    if (linkY > 280) {
+                        targetPage++;
+                        linkY = 20;
+                    }
+                }
+                
+                // Ensure we have the right page
+                if (targetPage >= pdf.internal.getNumberOfPages()) {
+                    pdf.addPage();
+                }
+                
+                // Set the page for adding links
+                const currentPage = pdf.internal.getCurrentPageInfo().pageNumber;
+                if (targetPage + 1 !== currentPage) {
+                    pdf.setPage(targetPage + 1);
+                }
+                
+                // Add wireframe links section
+                pdf.setFontSize(10);
+                pdf.setTextColor(0, 0, 0);
+                pdf.text('Wireframe Links:', 10, linkY);
+                linkY += 5;
+                
+                pdf.setFontSize(8);
+                pdf.setTextColor(0, 0, 255); // Blue for hyperlinks
+                
+                canvasData.step6.wireframeLinks.forEach((wireframeLink, index) => {
+                    // Check if we need a new page
+                    if (linkY > 285) {
+                        pdf.addPage();
+                        linkY = 20;
+                    }
+                    
+                    // Add the clickable hyperlink
+                    const linkText = `• ${wireframeLink.url}`;
+                    pdf.text(linkText, 12, linkY);
+                    
+                    // Add clickable area
+                    const textWidth = pdf.getTextWidth(linkText);
+                    pdf.link(12, linkY - 3, textWidth, 4, {
+                        url: wireframeLink.url
+                    });
+                    
+                    console.log(`Added wireframe hyperlink: ${wireframeLink.url} at position (12, ${linkY})`);
+                    linkY += 4; // Move to next line
+                });
+                
+                // Restore original page if we changed it
+                if (targetPage + 1 !== currentPage) {
+                    pdf.setPage(currentPage);
+                }
+            }
         }
         
         // Generate filename with current date

@@ -260,76 +260,81 @@ function addWireframeLink() {
     showNotification('Link added successfully!', 'success');
 }
 
-// Display uploaded files
-function displayUploadedFiles() {
+// Display all uploaded resources (files and wireframe links)
+function displayUploadedResources() {
     const display = document.getElementById('uploadedFilesDisplay');
     const filesList = document.getElementById('uploadedFilesList');
     
-    if (!canvasData.step6.uploadedFiles || canvasData.step6.uploadedFiles.length === 0) {
+    // Clear all existing content
+    filesList.innerHTML = '';
+    
+    const hasFiles = canvasData.step6.uploadedFiles && canvasData.step6.uploadedFiles.length > 0;
+    const hasLinks = canvasData.step6.wireframeLinks && canvasData.step6.wireframeLinks.length > 0;
+    
+    if (!hasFiles && !hasLinks) {
         display.style.display = 'none';
         return;
     }
     
     display.style.display = 'block';
-    filesList.innerHTML = '';
     
-    canvasData.step6.uploadedFiles.forEach((file, index) => {
-        const fileCard = document.createElement('div');
-        fileCard.className = 'col-md-4 mb-2';
-        fileCard.innerHTML = `
-            <div class="card">
-                <img src="${file.data}" class="card-img-top" alt="${file.name}" style="height: 120px; object-fit: contain; background-color: #f8f9fa;">
-                <div class="card-body p-2">
-                    <h6 class="card-title small mb-1">${file.name}</h6>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-secondary small">${file.type}</span>
-                        <button class="btn btn-outline-danger btn-sm" onclick="removeUploadedFile(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
+    // Display uploaded files
+    if (hasFiles) {
+        canvasData.step6.uploadedFiles.forEach((file, index) => {
+            const fileCard = document.createElement('div');
+            fileCard.className = 'col-md-4 mb-2';
+            fileCard.innerHTML = `
+                <div class="card">
+                    <img src="${file.data}" class="card-img-top" alt="${file.name}" style="height: 120px; object-fit: contain; background-color: #f8f9fa;">
+                    <div class="card-body p-2">
+                        <h6 class="card-title small mb-1">${file.name}</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary small">${file.type}</span>
+                            <button class="btn btn-outline-danger btn-sm" onclick="removeUploadedFile(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
-        filesList.appendChild(fileCard);
-    });
-}
-
-// Display wireframe links
-function displayWireframeLinks() {
-    const display = document.getElementById('uploadedFilesDisplay');
-    const filesList = document.getElementById('uploadedFilesList');
-    
-    if (!canvasData.step6.wireframeLinks || canvasData.step6.wireframeLinks.length === 0) {
-        if (!canvasData.step6.uploadedFiles || canvasData.step6.uploadedFiles.length === 0) {
-            display.style.display = 'none';
-        }
-        return;
+            `;
+            filesList.appendChild(fileCard);
+        });
     }
     
-    display.style.display = 'block';
-    
-    canvasData.step6.wireframeLinks.forEach((link, index) => {
-        const linkCard = document.createElement('div');
-        linkCard.className = 'col-md-6 mb-2';
-        linkCard.innerHTML = `
-            <div class="card">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-link text-success me-2"></i>
-                        <div class="flex-grow-1">
-                            <a href="${link.url}" target="_blank" class="small text-decoration-none">
-                                ${link.url.length > 40 ? link.url.substring(0, 40) + '...' : link.url}
-                            </a>
+    // Display wireframe links
+    if (hasLinks) {
+        canvasData.step6.wireframeLinks.forEach((link, index) => {
+            const linkCard = document.createElement('div');
+            linkCard.className = 'col-md-6 mb-2';
+            linkCard.innerHTML = `
+                <div class="card">
+                    <div class="card-body p-2">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-link text-success me-2"></i>
+                            <div class="flex-grow-1">
+                                <a href="${link.url}" target="_blank" class="small text-decoration-none">
+                                    ${link.url.length > 40 ? link.url.substring(0, 40) + '...' : link.url}
+                                </a>
+                            </div>
+                            <button class="btn btn-outline-danger btn-sm" onclick="removeWireframeLink(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
-                        <button class="btn btn-outline-danger btn-sm" onclick="removeWireframeLink(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
                     </div>
                 </div>
-            </div>
-        `;
-        filesList.appendChild(linkCard);
-    });
+            `;
+            filesList.appendChild(linkCard);
+        });
+    }
+}
+
+// Legacy function wrappers for backward compatibility
+function displayUploadedFiles() {
+    displayUploadedResources();
+}
+
+function displayWireframeLinks() {
+    displayUploadedResources();
 }
 
 // Remove uploaded file
@@ -354,14 +359,20 @@ function removeWireframeLink(index) {
 
 // Save form data
 function saveFormData() {
-    canvasData.step6 = {
-        ...canvasData.step6,
-        keyActivities: document.getElementById('keyActivities').value.trim(),
-        keyResources: document.getElementById('keyResources').value.trim(),
-        keyPartners: document.getElementById('keyPartners').value.trim(),
-        timeline: document.getElementById('timeline').value.trim(),
-        timestamp: new Date().toISOString()
-    };
+    // Update only the form fields while preserving uploadedFiles and wireframeLinks
+    canvasData.step6.keyActivities = document.getElementById('keyActivities').value.trim();
+    canvasData.step6.keyResources = document.getElementById('keyResources').value.trim();
+    canvasData.step6.keyPartners = document.getElementById('keyPartners').value.trim();
+    canvasData.step6.timeline = document.getElementById('timeline').value.trim();
+    canvasData.step6.timestamp = new Date().toISOString();
+    
+    // Ensure arrays exist
+    if (!canvasData.step6.uploadedFiles) {
+        canvasData.step6.uploadedFiles = [];
+    }
+    if (!canvasData.step6.wireframeLinks) {
+        canvasData.step6.wireframeLinks = [];
+    }
     
     saveDataToStorage();
 }

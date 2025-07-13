@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSelectedSolution();
     initializeFormHandlers();
     updateProgress();
+    
+    // Display prototypes after DOM is ready
+    displayPrototypes();
 });
 
 // Load existing data from localStorage
@@ -440,13 +443,21 @@ function displayPrototypes() {
     const container = document.getElementById('savedPrototypes');
     const noPrototypesMessage = document.getElementById('noPrototypesMessage');
     
+    // If elements don't exist yet, skip this function call
+    if (!container || !noPrototypesMessage) {
+        console.log('Prototype display elements not ready yet, skipping display');
+        return;
+    }
+    
+    // Always clear the container first
+    container.innerHTML = '';
+    
     if (savedPrototypes.length === 0) {
         noPrototypesMessage.style.display = 'block';
         return;
     }
     
     noPrototypesMessage.style.display = 'none';
-    container.innerHTML = '';
     
     savedPrototypes.forEach((prototype, index) => {
         const prototypeCard = document.createElement('div');
@@ -468,16 +479,28 @@ function displayPrototypes() {
         `;
         container.appendChild(prototypeCard);
     });
+    
+    console.log('Displayed prototypes:', savedPrototypes.length);
 }
 
 // Delete prototype
 function deletePrototype(index) {
     if (confirm('Are you sure you want to delete this prototype?')) {
+        // Remove from local array
         savedPrototypes.splice(index, 1);
-        canvasData.step5.prototypes = savedPrototypes;
-        displayPrototypes();
+        
+        // Update the main data object
+        canvasData.step5.prototypes = [...savedPrototypes]; // Create new array reference
+        
+        // Save to localStorage
         saveDataToStorage();
+        
+        // Update display
+        displayPrototypes();
+        
         showNotification('Prototype deleted.', 'info');
+        
+        console.log('Prototype deleted. Remaining prototypes:', savedPrototypes.length);
     }
 }
 
@@ -529,7 +552,19 @@ function populateForm() {
     const step5Data = canvasData.step5;
     
     if (step5Data.prototypes) {
-        savedPrototypes = step5Data.prototypes;
+        // Remove duplicates based on ID before displaying
+        const uniquePrototypes = step5Data.prototypes.filter((prototype, index, self) => 
+            index === self.findIndex(p => p.id === prototype.id)
+        );
+        
+        // If duplicates were found, update the data
+        if (uniquePrototypes.length !== step5Data.prototypes.length) {
+            console.log(`Removed ${step5Data.prototypes.length - uniquePrototypes.length} duplicate prototypes`);
+            canvasData.step5.prototypes = uniquePrototypes;
+            saveDataToStorage(); // Save the cleaned data
+        }
+        
+        savedPrototypes = uniquePrototypes;
         displayPrototypes();
     }
     
@@ -537,10 +572,13 @@ function populateForm() {
 
 // Save form data
 function saveFormData() {
-    canvasData.step5 = {
-        ...canvasData.step5,
-        timestamp: new Date().toISOString()
-    };
+    // Update timestamp without overwriting prototypes array
+    canvasData.step5.timestamp = new Date().toISOString();
+    
+    // Ensure prototypes array exists and is up to date
+    if (!canvasData.step5.prototypes) {
+        canvasData.step5.prototypes = [];
+    }
     
     saveDataToStorage();
 }
