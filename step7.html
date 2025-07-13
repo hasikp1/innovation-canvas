@@ -68,6 +68,13 @@
             text-decoration: none;
             font-size: 0.85rem;
         }
+        .wireframe-link-display {
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
         @media print {
             .no-print {
                 display: none !important;
@@ -255,23 +262,8 @@
                 <!-- Uploaded Files and Links -->
                 <div id="uploadedResourcesSection" class="mb-4" style="display: none;">
                     <h4 class="mb-3">Uploaded Resources</h4>
-                    
-                    <!-- Prototype Images from Step 5 -->
-                    <div id="prototypeImagesSection" style="display: none;">
-                        <h6 class="text-primary mb-2">Prototype Images</h6>
-                        <div id="prototypeImagesList" class="mb-3"></div>
-                    </div>
-                    
-                    <!-- Wireframe Images from Step 6 -->
-                    <div id="wireframeImagesSection" style="display: none;">
-                        <h6 class="text-success mb-2">Wireframe Images</h6>
-                        <div id="wireframeImagesList" class="mb-3"></div>
-                    </div>
-                    
-                    <!-- Wireframe Links from Step 6 -->
-                    <div id="wireframeLinksSection" style="display: none;">
-                        <h6 class="text-info mb-2">Wireframe Links</h6>
-                        <div id="wireframeLinksList" class="mb-3"></div>
+                    <div class="row" id="allResourcesList">
+                        <!-- All resources will be displayed here side by side -->
                     </div>
                 </div>
 

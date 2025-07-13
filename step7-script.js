@@ -54,10 +54,33 @@ function generateSummary() {
         }
     }
 
-    // Key Metrics (Step 4)
+    // Key Metrics (Step 4 - Evaluation Scores)
     const metricsElement = document.getElementById('summaryMetrics');
-    if (canvasData.step4?.successMetrics) {
-        metricsElement.innerHTML = `<p>${canvasData.step4.successMetrics}</p>`;
+    if (canvasData.step4?.selectedSolution !== null && canvasData.step4?.evaluations) {
+        const solutionIndex = canvasData.step4.selectedSolution;
+        const evaluation = canvasData.step4.evaluations[solutionIndex];
+        
+        if (evaluation) {
+            metricsElement.innerHTML = `
+                <div class="row text-center">
+                    <div class="col-6 mb-2">
+                        <strong>Feasibility:</strong> ${evaluation.feasibility || 0}/5
+                    </div>
+                    <div class="col-6 mb-2">
+                        <strong>Impact:</strong> ${evaluation.impact || 0}/5
+                    </div>
+                    <div class="col-6 mb-2">
+                        <strong>Resources:</strong> ${evaluation.resources || 0}/5
+                    </div>
+                    <div class="col-6 mb-2">
+                        <strong>User Appeal:</strong> ${evaluation.userAppeal || 0}/5
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <strong class="text-success">Total Score: ${evaluation.total || 0}/20</strong>
+                </div>
+            `;
+        }
     }
 
     // Target Users (Step 2)
@@ -148,52 +171,62 @@ function updateMetaInformation() {
 // Display uploaded resources
 function displayUploadedResources() {
     let hasResources = false;
+    const resourcesContainer = document.getElementById('allResourcesList');
 
     // Step 5 Prototypes
     if (canvasData.step5?.prototypes && canvasData.step5.prototypes.length > 0) {
         hasResources = true;
-        document.getElementById('prototypeImagesSection').style.display = 'block';
-        const prototypesList = document.getElementById('prototypeImagesList');
-        
         canvasData.step5.prototypes.forEach(prototype => {
-            const img = document.createElement('img');
-            img.src = prototype.imageData;
-            img.alt = prototype.title;
-            img.className = 'uploaded-image';
-            img.title = prototype.title;
-            prototypesList.appendChild(img);
+            const resourceDiv = document.createElement('div');
+            resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
+            resourceDiv.innerHTML = `
+                <div class="text-center">
+                    <img src="${prototype.imageData}" alt="${prototype.title}" class="uploaded-image mb-2" title="${prototype.title}">
+                    <div class="small text-muted">${prototype.title}</div>
+                    <div class="badge bg-primary">Prototype</div>
+                </div>
+            `;
+            resourcesContainer.appendChild(resourceDiv);
         });
     }
 
     // Step 6 Wireframe Images
     if (canvasData.step6?.uploadedFiles && canvasData.step6.uploadedFiles.length > 0) {
         hasResources = true;
-        document.getElementById('wireframeImagesSection').style.display = 'block';
-        const wireframeImagesList = document.getElementById('wireframeImagesList');
-        
         canvasData.step6.uploadedFiles.forEach(file => {
-            const img = document.createElement('img');
-            img.src = file.data;
-            img.alt = file.name;
-            img.className = 'uploaded-image';
-            img.title = file.name;
-            wireframeImagesList.appendChild(img);
+            const resourceDiv = document.createElement('div');
+            resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
+            resourceDiv.innerHTML = `
+                <div class="text-center">
+                    <img src="${file.data}" alt="${file.name}" class="uploaded-image mb-2" title="${file.name}">
+                    <div class="small text-muted">${file.name}</div>
+                    <div class="badge bg-success">Wireframe</div>
+                </div>
+            `;
+            resourcesContainer.appendChild(resourceDiv);
         });
     }
 
     // Step 6 Wireframe Links
     if (canvasData.step6?.wireframeLinks && canvasData.step6.wireframeLinks.length > 0) {
         hasResources = true;
-        document.getElementById('wireframeLinksSection').style.display = 'block';
-        const wireframeLinksList = document.getElementById('wireframeLinksList');
-        
         canvasData.step6.wireframeLinks.forEach(link => {
-            const linkElement = document.createElement('a');
-            linkElement.href = link.url;
-            linkElement.target = '_blank';
-            linkElement.className = 'wireframe-link';
-            linkElement.textContent = link.url.length > 50 ? link.url.substring(0, 50) + '...' : link.url;
-            wireframeLinksList.appendChild(linkElement);
+            const resourceDiv = document.createElement('div');
+            resourceDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
+            const displayUrl = link.url.length > 30 ? link.url.substring(0, 30) + '...' : link.url;
+            resourceDiv.innerHTML = `
+                <div class="text-center">
+                    <div class="wireframe-link-display mb-2 p-3 border rounded bg-light">
+                        <i class="fas fa-external-link-alt fa-2x text-info mb-2"></i>
+                        <div class="small text-muted">${displayUrl}</div>
+                    </div>
+                    <a href="${link.url}" target="_blank" class="btn btn-sm btn-outline-info">
+                        <i class="fas fa-external-link-alt me-1"></i>Open Link
+                    </a>
+                    <div class="badge bg-info mt-1">Wireframe Link</div>
+                </div>
+            `;
+            resourcesContainer.appendChild(resourceDiv);
         });
     }
 
