@@ -252,13 +252,21 @@ async function exportToPDF() {
         noPrintElements.forEach(el => el.style.display = 'none');
         printOnlyElements.forEach(el => el.style.display = 'block');
         
-        // Use html2canvas to capture the content
+        // Make sure uploaded resources are visible for PDF
+        const uploadedResourcesSection = document.getElementById('uploadedResourcesSection');
+        if (uploadedResourcesSection) {
+            uploadedResourcesSection.style.display = 'block';
+        }
+        
+        // Use html2canvas to capture the content with better settings for images
         const canvas = await html2canvas(document.querySelector('.main-content'), {
-            scale: 2,
+            scale: 1.5,
             useCORS: true,
             allowTaint: true,
-            height: window.innerHeight,
-            width: window.innerWidth
+            foreignObjectRendering: true,
+            logging: false,
+            height: document.querySelector('.main-content').scrollHeight,
+            width: document.querySelector('.main-content').scrollWidth
         });
         
         // Restore visibility
@@ -272,7 +280,32 @@ async function exportToPDF() {
         const imgWidth = 210; // A4 width in mm
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
+        // If content is too long, split into multiple pages
+        if (imgHeight > 297) { // A4 height is 297mm
+            const pageHeight = 297;
+            const totalPages = Math.ceil(imgHeight / pageHeight);
+            
+            for (let i = 0; i < totalPages; i++) {
+                if (i > 0) {
+                    pdf.addPage();
+                }
+                
+                const sourceY = (canvas.height * pageHeight * i) / imgWidth;
+                const sourceHeight = Math.min(canvas.height * pageHeight / imgWidth, canvas.height - sourceY);
+                
+                // Create a temporary canvas for this page
+                const pageCanvas = document.createElement('canvas');
+                const pageCtx = pageCanvas.getContext('2d');
+                pageCanvas.width = canvas.width;
+                pageCanvas.height = sourceHeight;
+                
+                pageCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
+                
+                pdf.addImage(pageCanvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, pageHeight);
+            }
+        } else {
+            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
+        }
         
         // Generate filename with current date
         const filename = `Innovation_Canvas_Summary_${new Date().toISOString().split('T')[0]}.pdf`;
@@ -297,10 +330,20 @@ async function downloadAsImage() {
         noPrintElements.forEach(el => el.style.display = 'none');
         printOnlyElements.forEach(el => el.style.display = 'block');
         
+        // Make sure uploaded resources are visible for image
+        const uploadedResourcesSection = document.getElementById('uploadedResourcesSection');
+        if (uploadedResourcesSection) {
+            uploadedResourcesSection.style.display = 'block';
+        }
+        
         const canvas = await html2canvas(document.querySelector('.main-content'), {
-            scale: 2,
+            scale: 1.5,
             useCORS: true,
-            allowTaint: true
+            allowTaint: true,
+            foreignObjectRendering: true,
+            logging: false,
+            height: document.querySelector('.main-content').scrollHeight,
+            width: document.querySelector('.main-content').scrollWidth
         });
         
         // Restore visibility
