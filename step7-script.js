@@ -172,6 +172,9 @@ function updateMetaInformation() {
 function displayUploadedResources() {
     let hasResources = false;
     const resourcesContainer = document.getElementById('allResourcesList');
+    
+    // Clear existing resources to prevent duplicates
+    resourcesContainer.innerHTML = '';
 
     // Step 5 Prototypes
     if (canvasData.step5?.prototypes && canvasData.step5.prototypes.length > 0) {
@@ -232,6 +235,8 @@ function displayUploadedResources() {
 
     if (hasResources) {
         document.getElementById('uploadedResourcesSection').style.display = 'block';
+    } else {
+        document.getElementById('uploadedResourcesSection').style.display = 'none';
     }
 }
 
@@ -242,9 +247,21 @@ function setPrintDate() {
 
 // Export to PDF function
 async function exportToPDF() {
+    console.log('exportToPDF called');
     showNotification('Generating PDF... Please wait.', 'info');
     
     try {
+        // Wait a moment to ensure page is fully rendered
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Check if main content exists
+        const mainContent = document.querySelector('.main-content');
+        if (!mainContent) {
+            throw new Error('Main content not found');
+        }
+        
+        console.log('Main content found, proceeding with PDF generation');
+        
         // Hide no-print elements and show print-only elements
         const noPrintElements = document.querySelectorAll('.no-print');
         const printOnlyElements = document.querySelectorAll('.print-only');
@@ -256,22 +273,35 @@ async function exportToPDF() {
         const uploadedResourcesSection = document.getElementById('uploadedResourcesSection');
         if (uploadedResourcesSection) {
             uploadedResourcesSection.style.display = 'block';
+            console.log('Uploaded resources section made visible');
         }
         
+        // Wait for any images to load
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        console.log('Starting html2canvas capture');
+        
         // Use html2canvas to capture the content with better settings for images
-        const canvas = await html2canvas(document.querySelector('.main-content'), {
+        const canvas = await html2canvas(mainContent, {
             scale: 1.5,
             useCORS: true,
             allowTaint: true,
             foreignObjectRendering: true,
-            logging: false,
-            height: document.querySelector('.main-content').scrollHeight,
-            width: document.querySelector('.main-content').scrollWidth
+            logging: true,
+            height: mainContent.scrollHeight,
+            width: mainContent.scrollWidth
         });
+        
+        console.log('html2canvas capture completed, canvas size:', canvas.width, 'x', canvas.height);
         
         // Restore visibility
         noPrintElements.forEach(el => el.style.display = '');
         printOnlyElements.forEach(el => el.style.display = 'none');
+        
+        // Check if canvas has content
+        if (canvas.width === 0 || canvas.height === 0) {
+            throw new Error('Canvas is empty');
+        }
         
         // Create PDF
         const { jsPDF } = window.jspdf;
@@ -280,10 +310,13 @@ async function exportToPDF() {
         const imgWidth = 210; // A4 width in mm
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
+        console.log('PDF dimensions:', imgWidth, 'x', imgHeight);
+        
         // If content is too long, split into multiple pages
         if (imgHeight > 297) { // A4 height is 297mm
             const pageHeight = 297;
             const totalPages = Math.ceil(imgHeight / pageHeight);
+            console.log('Creating multi-page PDF with', totalPages, 'pages');
             
             for (let i = 0; i < totalPages; i++) {
                 if (i > 0) {
@@ -311,11 +344,26 @@ async function exportToPDF() {
         const filename = `Innovation_Canvas_Summary_${new Date().toISOString().split('T')[0]}.pdf`;
         pdf.save(filename);
         
+        console.log('PDF saved successfully');
         showNotification('PDF exported successfully!', 'success');
     } catch (error) {
         console.error('Error generating PDF:', error);
-        showNotification('Error generating PDF. Please try again.', 'error');
+        showNotification('Error generating PDF: ' + error.message, 'error');
     }
+}
+
+// Debug version of export to PDF for bottom button
+async function exportToPDFDebug() {
+    console.log('exportToPDFDebug called from bottom button');
+    
+    // Scroll to top to ensure all content is visible
+    window.scrollTo(0, 0);
+    
+    // Wait a moment for scroll to complete
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Call the main export function
+    return exportToPDF();
 }
 
 // Download as image
