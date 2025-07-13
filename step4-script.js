@@ -57,6 +57,8 @@ function loadPreviousIdeas() {
         if (previousIdeas.length > 0) {
             displayPreviousIdeas();
             generateEvaluationTable();
+            // Populate evaluation data after table is generated
+            populateEvaluationData();
         } else {
             showNoIdeasMessage();
         }
@@ -201,7 +203,7 @@ function initializeFormHandlers() {
 function updateEvaluation(selectElement) {
     const ideaId = selectElement.getAttribute('data-idea-id');
     const criteria = selectElement.getAttribute('data-criteria');
-    const value = parseInt(selectElement.value);
+    const value = parseInt(selectElement.value) || 0;
     
     // Initialize evaluation object for this idea if not exists
     if (!evaluationData[ideaId]) {
@@ -218,15 +220,18 @@ function updateEvaluation(selectElement) {
     evaluationData[ideaId][criteria] = value;
     
     // Calculate total
-    const total = evaluationData[ideaId].feasibility + 
-                 evaluationData[ideaId].impact + 
-                 evaluationData[ideaId].resources + 
-                 evaluationData[ideaId].userAppeal;
+    const total = (evaluationData[ideaId].feasibility || 0) + 
+                 (evaluationData[ideaId].impact || 0) + 
+                 (evaluationData[ideaId].resources || 0) + 
+                 (evaluationData[ideaId].userAppeal || 0);
     
     evaluationData[ideaId].total = total;
     
     // Update display
-    document.getElementById(`total-${ideaId}`).textContent = total;
+    const totalElement = document.getElementById(`total-${ideaId}`);
+    if (totalElement) {
+        totalElement.textContent = total;
+    }
     
     // Automatically select best solution
     autoSelectBestSolution();
@@ -276,6 +281,12 @@ function selectSolution(ideaId) {
     const selectedIdea = previousIdeas[ideaId];
     const evaluation = evaluationData[ideaId];
     
+    // Check if selectedIdea exists to prevent errors
+    if (!selectedIdea) {
+        console.error('Selected idea not found for ideaId:', ideaId);
+        return;
+    }
+    
     // Hide selection prompt and show details
     document.getElementById('selectedSolution').querySelector('.text-center').style.display = 'none';
     document.getElementById('solutionDetails').style.display = 'block';
@@ -307,8 +318,8 @@ function selectSolution(ideaId) {
     showNotification('Solution selected successfully!', 'success');
 }
 
-// Populate form with saved data
-function populateForm() {
+// Populate evaluation data after table is generated
+function populateEvaluationData() {
     const step4Data = canvasData.step4;
     
     if (step4Data.evaluations) {
@@ -338,6 +349,11 @@ function populateForm() {
     if (step4Data.selectedSolution !== null) {
         selectSolution(step4Data.selectedSolution);
     }
+}
+
+// Populate form with saved data
+function populateForm() {
+    const step4Data = canvasData.step4;
     
     if (step4Data.refinement) {
         document.getElementById('solutionRefinement').value = step4Data.refinement;
