@@ -988,289 +988,76 @@ function createPDFTemplate() {
     };
 }
 
-// Enhanced PDF export function that matches the reference Innovation Canvas layout
+// Enhanced PDF export function using template.html design
 async function exportToPDF() {
-    console.log('exportToPDF called - creating Innovation Canvas layout');
-    showNotification('Generating Innovation Canvas PDF... Please wait.', 'info');
+    console.log('exportToPDF called - using template.html design approach');
+    showNotification('Generating PDF... Please wait.', 'info');
     
     try {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        const template = createPDFTemplate();
+        const { 
+            pdf, 
+            addHeaderBanner, 
+            addMainContentBackground, 
+            addTitleBar, 
+            addStepSummaryGrid,
+            addResourcesSection,
+            addFooterDetails
+        } = template;
         
-        // PDF dimensions
-        const pageWidth = 210;
-        const pageHeight = 297;
-        const margin = 15;
-        const contentWidth = pageWidth - (margin * 2);
-        let currentY = margin;
+        // Create step-by-step summary grid (poster style)
+        // canvasData is already loaded as a global variable from localStorage
+        addStepSummaryGrid(canvasData);
         
-        // Helper function to get project name or use default
-        function getProjectName() {
-            return canvasData.step1?.problemStatement || 'Innovation Project';
-        }
+        // Step 5: Add uploaded resources section
+        let allImages = [];
+        let allLinks = [];
         
-        // Create header section
-        function createHeader() {
-            // Main title background (dark blue gradient)
-            pdf.setFillColor(47, 79, 79); // Dark slate gray
-            pdf.rect(0, 0, pageWidth, 35, 'F');
-            
-            // Title
-            pdf.setFont("helvetica", 'bold');
-            pdf.setFontSize(20);
-            pdf.setTextColor(255, 255, 255);
-            pdf.text('Innovation Canvas', pageWidth/2, 15, { align: 'center' });
-            
-            pdf.setFont("helvetica", 'normal');
-            pdf.setFontSize(10);
-            pdf.text('Structured Student Brainstorming Results', pageWidth/2, 25, { align: 'center' });
-            
-            currentY = 45;
-            
-            // Project info section (white background)
-            pdf.setFillColor(255, 255, 255);
-            pdf.rect(0, 35, pageWidth, 25, 'F');
-            
-            // Project name and details
-            pdf.setFont("helvetica", 'bold');
-            pdf.setFontSize(14);
-            pdf.setTextColor(51, 51, 51);
-            const projectName = getProjectName();
-            pdf.text(projectName, margin, 50);
-            
-            // Date and user info in top right
-            pdf.setFont("helvetica", 'normal');
-            pdf.setFontSize(9);
-            pdf.setTextColor(102, 102, 102);
-            const today = new Date();
-            pdf.text(`Date:`, pageWidth - 60, 45);
-            pdf.text(today.toLocaleDateString(), pageWidth - 25, 45);
-            pdf.text(`User Name:`, pageWidth - 60, 52);
-            pdf.text('Student', pageWidth - 25, 52);
-            
-            currentY = 70;
-        }
-        
-        // Create the 6-section grid layout
-        function createSectionsGrid() {
-            const sectionWidth = (contentWidth - 10) / 2; // 2 columns
-            const sectionHeight = 65;
-            const gap = 10;
-            
-            const sections = [
-                {
-                    number: '01',
-                    title: 'Define the Problem',
-                    color: [255, 99, 132], // Pink/Red
-                    content: {
-                        'Problem Statement': canvasData.step1?.problemStatement || 'Not defined',
-                        'Who is affected by the problem?': canvasData.step2?.primaryUsers || 'Not specified',
-                        'Why is it important to solve?': getImportanceReason()
-                    }
-                },
-                {
-                    number: '02',
-                    title: 'Identify Target Users',
-                    color: [255, 159, 64], // Orange
-                    content: {
-                        'Primary Users': canvasData.step2?.primaryUsers || 'Not identified',
-                        'Key Needs': canvasData.step2?.keyNeeds || 'Not specified',
-                        'Biggest Frustrations': canvasData.step2?.biggestFrustration || 'Not identified'
-                    }
-                },
-                {
-                    number: '03',
-                    title: 'Brainstorming Solutions',
-                    color: [255, 205, 86], // Yellow
-                    content: {
-                        'How might we use existing technology effectively?': getGeneratedIdeasSummary(),
-                        'What would the easiest solution look like?': 'Step-by-step guided approach',
-                        'Great ideas list, Good ideas list, Wild ideas list': formatIdeasByCategory()
-                    }
-                },
-                {
-                    number: '04',
-                    title: 'Select Best Solutions',
-                    color: [75, 192, 192], // Teal/Green
-                    content: {
-                        'Refine your solution': canvasData.step4?.refinement || getSelectedSolutionName(),
-                        'Evaluation score + total score': getEvaluationDetails()
-                    }
-                },
-                {
-                    number: '05',
-                    title: 'Prototyping',
-                    color: [153, 102, 255], // Purple
-                    content: {
-                        'Pencil sketch or Wireframe + AI generated image': getPrototypingSummary(),
-                        'Side by side comparison': getPrototypeComparison()
-                    }
-                },
-                {
-                    number: '06',
-                    title: 'Plan Implementation',
-                    color: [54, 162, 235], // Blue
-                    content: {
-                        'Key activities': truncateText(canvasData.step6?.keyActivities, 80) || 'Not planned',
-                        'Key resources': truncateText(canvasData.step6?.keyResources, 80) || 'Not identified',
-                        'Key partners': truncateText(canvasData.step6?.keyPartners, 80) || 'Not specified',
-                        'Timeline': truncateText(canvasData.step6?.timeline, 80) || 'Not scheduled'
-                    }
+        // Collect prototype images
+        if (canvasData.step5?.prototypes && canvasData.step5.prototypes.length > 0) {
+            canvasData.step5.prototypes.forEach(prototype => {
+                if (prototype.imageData) {
+                    allImages.push({
+                        data: prototype.imageData,
+                        title: prototype.title,
+                        type: 'prototype'
+                    });
                 }
-            ];
-            
-            // Draw sections in 2x3 grid
-            sections.forEach((section, index) => {
-                const col = index % 2;
-                const row = Math.floor(index / 2);
-                const x = margin + (col * (sectionWidth + gap));
-                const y = currentY + (row * (sectionHeight + gap));
-                
-                drawSection(section, x, y, sectionWidth, sectionHeight);
-            });
-            
-            currentY += 3 * (sectionHeight + gap) + 10;
-        }
-        
-        // Draw individual section
-        function drawSection(section, x, y, width, height) {
-            // Section background
-            pdf.setFillColor(255, 255, 255);
-            pdf.setDrawColor(200, 200, 200);
-            pdf.setLineWidth(0.5);
-            pdf.rect(x, y, width, height, 'FD');
-            
-            // Section header with color
-            pdf.setFillColor(...section.color);
-            pdf.rect(x, y, width, 12, 'F');
-            
-            // Section number circle
-            pdf.setFillColor(255, 255, 255);
-            pdf.circle(x + 8, y + 6, 4, 'F');
-            pdf.setFont("helvetica", 'bold');
-            pdf.setFontSize(8);
-            pdf.setTextColor(51, 51, 51);
-            pdf.text(section.number, x + 6, y + 7.5);
-            
-            // Section title
-            pdf.setFont("helvetica", 'bold');
-            pdf.setFontSize(9);
-            pdf.setTextColor(255, 255, 255);
-            pdf.text(section.title, x + 16, y + 7.5);
-            
-            // Section content
-            let contentY = y + 18;
-            pdf.setFont("helvetica", 'normal');
-            pdf.setFontSize(7);
-            pdf.setTextColor(51, 51, 51);
-            
-            Object.entries(section.content).forEach(([key, value]) => {
-                if (contentY > y + height - 8) return; // Don't overflow
-                
-                // Key (bold)
-                pdf.setFont("helvetica", 'bold');
-                const keyLines = pdf.splitTextToSize(key + ':', width - 8);
-                keyLines.forEach(line => {
-                    if (contentY < y + height - 5) {
-                        pdf.text(line, x + 4, contentY);
-                        contentY += 3;
-                    }
-                });
-                
-                // Value (normal)
-                pdf.setFont("helvetica", 'normal');
-                pdf.setTextColor(102, 102, 102);
-                const valueLines = pdf.splitTextToSize(value, width - 8);
-                valueLines.forEach((line, index) => {
-                    if (contentY < y + height - 5 && index < 3) { // Limit to 3 lines
-                        pdf.text(line, x + 4, contentY);
-                        contentY += 2.5;
-                    }
-                });
-                contentY += 2;
-                pdf.setTextColor(51, 51, 51);
             });
         }
         
-        // Add footer section
-        function createFooter() {
-            // Footer background (dark blue)
-            pdf.setFillColor(47, 79, 79);
-            pdf.rect(0, currentY, pageWidth, 15, 'F');
-            
-            // Footer text
-            pdf.setFont("helvetica", 'normal');
-            pdf.setFontSize(8);
-            pdf.setTextColor(255, 255, 255);
-            pdf.text(`Generated by Innovation Canvas Tool | ${new Date().toLocaleDateString()}`, margin, currentY + 8);
-            pdf.text('Ready for classroom presentation', pageWidth - margin - 80, currentY + 8);
-        }
-        
-        // Helper functions
-        function getImportanceReason() {
-            return canvasData.step1?.problemDescription || 'Addresses a critical need in the target market';
-        }
-        
-        function getGeneratedIdeasSummary() {
-            const ideasCount = canvasData.step3?.ideas?.filter(idea => idea.content?.trim()).length || 0;
-            return `Generated ${ideasCount} innovative solutions through structured brainstorming`;
-        }
-        
-        function formatIdeasByCategory() {
-            if (!canvasData.step3?.ideas) return 'No ideas generated';
-            const great = canvasData.step3.ideas.filter(i => i.category === 'great').length;
-            const good = canvasData.step3.ideas.filter(i => i.category === 'good').length;
-            const wild = canvasData.step3.ideas.filter(i => i.category === 'wild').length;
-            return `Great: ${great}, Good: ${good}, Wild: ${wild}`;
-        }
-        
-        function getSelectedSolutionName() {
-            if (canvasData.step4?.selectedSolution !== null && canvasData.step3?.ideas) {
-                const selectedIdea = canvasData.step3.ideas[canvasData.step4.selectedSolution];
-                return selectedIdea?.title || 'Selected solution needs refinement';
-            }
-            return 'No solution selected yet';
-        }
-        
-        function getEvaluationDetails() {
-            if (canvasData.step4?.evaluations && canvasData.step4?.selectedSolution !== null) {
-                const eval = canvasData.step4.evaluations[canvasData.step4.selectedSolution];
-                if (eval) {
-                    return `Feasibility: ${eval.feasibility||0}/10, Impact Potential: ${eval.impact||0}/10, Resource Requirements: ${eval.resources||0}/10, User Need Alignment: ${eval.userAppeal||0}/10, Total Score: ${eval.total||0}/40`;
+        // Collect wireframe images
+        if (canvasData.step6?.uploadedFiles && canvasData.step6.uploadedFiles.length > 0) {
+            canvasData.step6.uploadedFiles.forEach(file => {
+                if (file.data) {
+                    allImages.push({
+                        data: file.data,
+                        title: file.name,
+                        type: 'wireframe'
+                    });
                 }
-            }
-            return 'Evaluation pending completion';
+            });
         }
         
-        function getPrototypingSummary() {
-            const prototypeCount = canvasData.step5?.prototypes?.length || 0;
-            const wireframeCount = canvasData.step6?.uploadedFiles?.length || 0;
-            return `${wireframeCount} wireframes, ${prototypeCount} AI-generated mockups created`;
+        // Collect wireframe links
+        if (canvasData.step6?.wireframeLinks && canvasData.step6.wireframeLinks.length > 0) {
+            allLinks = canvasData.step6.wireframeLinks;
         }
         
-        function getPrototypeComparison() {
-            return 'Improved UX and detailed insights based on initial concepts';
-        }
+        addResourcesSection(allImages, allLinks);
         
-        function truncateText(text, maxLength) {
-            if (!text) return '';
-            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-        }
+        // Step 6: Add footer details
+        addFooterDetails();
         
-        // Build the PDF
-        createHeader();
-        createSectionsGrid();
-        createFooter();
-        
-        // Generate and save
-        const filename = `Innovation_Canvas_${new Date().toISOString().split('T')[0]}.pdf`;
+        // Generate filename and save
+        const filename = `Innovation_Canvas_Summary_${new Date().toISOString().split('T')[0]}.pdf`;
         pdf.save(filename);
         
-        console.log('Innovation Canvas PDF generated successfully');
-        showNotification('Innovation Canvas PDF exported successfully!', 'success');
+        console.log('PDF generated successfully using template.html design');
+        showNotification('PDF exported successfully with clean template design!', 'success');
         
     } catch (error) {
-        console.error('Error generating Innovation Canvas PDF:', error);
+        console.error('Error generating PDF:', error);
         showNotification('Error generating PDF: ' + error.message, 'error');
     }
 }
